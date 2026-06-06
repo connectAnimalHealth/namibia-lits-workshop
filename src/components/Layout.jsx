@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import { Menu, X, Home, MapPin, FileSpreadsheet, Code, BarChart3, Network, ChevronDown, ChevronRight } from 'lucide-react'
+import { Menu, X, Home, MapPin, FileSpreadsheet, Code, BarChart3, Network, ChevronDown, ChevronRight, Database } from 'lucide-react'
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
@@ -12,6 +12,7 @@ const navigation = [
       { name: '1.1 Data Management Principles', href: '/day1/session1' },
       { name: '1.2 EpiCollect5 Overview', href: '/day1/session2' },
       { name: '2.1 Field Testing & QA', href: '/day2/session1' },
+      { name: '2.2 EpiCollect5 API', href: '/day2/session2' },
     ]
   },
   {
