@@ -5,93 +5,207 @@ import Exercise from '../../components/Exercise'
 export default function Day5Session1() {
   const networkIntroCode = `# Load packages
 library(tidyverse)
+library(readxl)
 library(igraph)
 
-# Load movement data
-movements <- read_csv("data/namibia_movements.csv")
+# Load NCA movement data
+movements <- read_excel("data/animal_movement_2023_rev3.xlsx")
 
-# Create edge list (connections between farms)
-edges <- movements %>%
-  select(from = origin_farm, to = destination_farm, weight = animals) %>%
-  group_by(from, to) %>%
+# Network at CONSTITUENCY level (75 constituencies in NCA)
+# Create edge list aggregated by constituency
+const_edges <- movements %>%
+  filter(!is.na(origin_constituency) & !is.na(destination_constituency)) %>%
+  group_by(
+    from = origin_constituency,
+    to = destination_constituency
+  ) %>%
+  summarize(
+    movements = n(),
+    total_animals = sum(weight),
+    .groups = "drop"
+  ) %>%
+  filter(from != to)  # Remove self-loops
+
+# Create the network graph
+g_const <- graph_from_data_frame(const_edges, directed = TRUE)
+
+# Basic network info
+cat("Number of constituencies (nodes):", vcount(g_const), "\\n")
+cat("Number of connections (edges):", ecount(g_const), "\\n")
+
+# Network at ESTABLISHMENT level
+est_edges <- movements %>%
+  filter(!is.na(origin_establishment) & !is.na(destination_establishment)) %>%
+  group_by(
+    from = origin_establishment,
+    to = destination_establishment,
+    movement_type = paste(origin_establishment_type, "->", destination_establishment_type)
+  ) %>%
   summarize(
     movements = n(),
     total_animals = sum(weight),
     .groups = "drop"
   )
 
-# Create the network graph
-g <- graph_from_data_frame(edges, directed = TRUE)
+g_est <- graph_from_data_frame(est_edges, directed = TRUE)
+cat("Number of establishments (nodes):", vcount(g_est), "\\n")
+cat("Number of connections (edges):", ecount(g_est), "\\n")`
 
-# Basic network info
-vcount(g)  # Number of farms (nodes)
-ecount(g)  # Number of connections (edges)`
+  const centralityCode = `# Calculate centrality measures for constituencies
+# In-degree: How many constituencies send animals TO this constituency?
+in_degree <- degree(g_const, mode = "in")
 
-  const centralityCode = `# Calculate centrality measures
+# Out-degree: How many constituencies does this send animals TO?
+out_degree <- degree(g_const, mode = "out")
 
-# In-degree: How many farms send animals TO this farm?
-in_degree <- degree(g, mode = "in")
+# Betweenness: How often is this constituency on shortest path?
+# High betweenness = critical hub for disease spread
+betweenness_scores <- betweenness(g_const, directed = TRUE)
 
-# Out-degree: How many farms does this farm send animals TO?
-out_degree <- degree(g, mode = "out")
+# Weighted versions (accounting for animal numbers)
+strength_in <- strength(g_const, mode = "in", weights = E(g_const)$total_animals)
+strength_out <- strength(g_const, mode = "out", weights = E(g_const)$total_animals)
 
-# Betweenness: How often is this farm on the shortest path between others?
-# High betweenness = critical hub in the network
-betweenness_scores <- betweenness(g, directed = TRUE)
-
-# Create a summary dataframe
-farm_centrality <- data.frame(
-  farm = V(g)$name,
+# Create summary dataframe
+const_centrality <- data.frame(
+  constituency = V(g_const)$name,
   in_degree = in_degree,
   out_degree = out_degree,
-  betweenness = betweenness_scores
+  betweenness = betweenness_scores,
+  animals_in = strength_in,
+  animals_out = strength_out
+) %>%
+  mutate(
+    total_degree = in_degree + out_degree,
+    net_flow = animals_in - animals_out  # Positive = net importer
+  ) %>%
+  arrange(desc(betweenness))
+
+# Top 10 most central constituencies
+cat("Top 10 constituencies by betweenness centrality:\\n")
+head(const_centrality, 10)
+
+# Net importers vs exporters
+cat("\\nTop net importers (receive more than send):\\n")
+const_centrality %>% arrange(desc(net_flow)) %>% head(5)
+
+cat("\\nTop net exporters (send more than receive):\\n")
+const_centrality %>% arrange(net_flow) %>% head(5)`
+
+  const visualizeNetworkCode = `# Network visualization with ggraph
+library(ggraph)
+library(sf)
+
+# Simple network plot
+ggraph(g_const, layout = "fr") +
+  geom_edge_link(aes(alpha = total_animals, width = movements),
+                 arrow = arrow(length = unit(2, "mm"), type = "closed"),
+                 end_cap = circle(3, "mm")) +
+  geom_node_point(aes(size = degree(g_const, mode = "all")),
+                  color = "#003580") +
+  geom_node_text(aes(label = name), repel = TRUE, size = 2.5) +
+  scale_edge_alpha_continuous(range = c(0.2, 0.8)) +
+  scale_edge_width_continuous(range = c(0.3, 2)) +
+  theme_void() +
+  labs(title = "NCA Constituency Movement Network (2023)",
+       subtitle = "Node size = connections, Edge opacity = animals moved")
+
+# Geographic network using centroids
+constituencies <- st_read("data/shapefile/nca_const.shp")
+vcf <- st_read("data/shapefile/VCF_2018.shp")
+
+# Calculate centroids
+centroids <- constituencies %>%
+  st_centroid() %>%
+  mutate(
+    lon = st_coordinates(.)[,1],
+    lat = st_coordinates(.)[,2]
+  ) %>%
+  st_drop_geometry() %>%
+  select(NAME, lon, lat)
+
+# Join centrality data
+centroids_data <- centroids %>%
+  left_join(const_centrality, by = c("NAME" = "constituency"))
+
+# Create flow lines for top movements
+top_flows <- const_edges %>%
+  arrange(desc(total_animals)) %>%
+  head(50) %>%
+  left_join(centroids, by = c("from" = "NAME")) %>%
+  rename(x_from = lon, y_from = lat) %>%
+  left_join(centroids, by = c("to" = "NAME")) %>%
+  rename(x_to = lon, y_to = lat)
+
+# Geographic flow map
+ggplot() +
+  geom_sf(data = constituencies, fill = "grey95", color = "grey70") +
+  geom_sf(data = vcf, color = "red", linewidth = 1.5, linetype = "dashed") +
+  geom_segment(data = top_flows,
+               aes(x = x_from, y = y_from, xend = x_to, yend = y_to,
+                   alpha = total_animals, linewidth = movements),
+               color = "#003580",
+               arrow = arrow(length = unit(2, "mm"), type = "closed")) +
+  geom_point(data = centroids_data,
+             aes(x = lon, y = lat, size = betweenness),
+             color = "#C8102E", alpha = 0.7) +
+  scale_size_continuous(range = c(1, 8)) +
+  scale_alpha_continuous(range = c(0.3, 0.9)) +
+  labs(title = "Livestock Movement Flows (NCA 2023)",
+       subtitle = "Top 50 movement pathways by animal count",
+       caption = "Node size = betweenness centrality, Red dashed = VCF") +
+  theme_minimal()`
+
+  const riskAnalysisCode = `# Analyze movement patterns by establishment type
+# Key question: Where do animals flow from auctions?
+
+# Movement patterns
+movement_patterns <- movements %>%
+  group_by(origin_establishment_type, destination_establishment_type) %>%
+  summarize(
+    movements = n(),
+    total_animals = sum(weight),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(movements))
+
+cat("Top movement patterns by establishment type:\\n")
+print(movement_patterns)
+
+# Auction analysis - key aggregation points
+auction_origins <- movements %>%
+  filter(origin_establishment_type == "Auction") %>%
+  group_by(origin_establishment, destination_region) %>%
+  summarize(
+    movements = n(),
+    animals = sum(weight),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(animals))
+
+cat("\\nWhere do animals from auctions go?\\n")
+print(head(auction_origins, 10))
+
+# High-risk establishments (high betweenness)
+est_centrality <- data.frame(
+  establishment = V(g_est)$name,
+  in_degree = degree(g_est, mode = "in"),
+  out_degree = degree(g_est, mode = "out"),
+  betweenness = betweenness(g_est, directed = TRUE)
 ) %>%
   arrange(desc(betweenness))
 
-# Top 10 most central farms
-head(farm_centrality, 10)`
+cat("\\nTop 10 establishments by betweenness (disease spread risk):\\n")
+print(head(est_centrality, 10))
 
-  const visualizeNetworkCode = `# Simple network visualization
-plot(g,
-     vertex.size = degree(g) * 2,
-     vertex.label.cex = 0.6,
-     edge.arrow.size = 0.3,
-     main = "Namibia Livestock Movement Network")
+# Regional connectivity
+regional_edges <- movements %>%
+  group_by(origin_region, destination_region) %>%
+  summarize(movements = n(), animals = sum(weight), .groups = "drop") %>%
+  filter(origin_region != destination_region)
 
-# Better visualization with ggraph
-library(ggraph)
-
-ggraph(g, layout = "fr") +
-  geom_edge_link(aes(alpha = total_animals),
-                 arrow = arrow(length = unit(2, "mm")),
-                 end_cap = circle(2, "mm")) +
-  geom_node_point(aes(size = degree(g)), color = "#003580") +
-  geom_node_text(aes(label = name), repel = TRUE, size = 2) +
-  theme_void() +
-  labs(title = "Livestock Movement Network",
-       subtitle = "Node size = number of connections")`
-
-  const riskAnalysisCode = `# Identify high-risk pathways
-
-# Movements crossing the VCF (NCA to FMD-free)
-vcf_crossings <- movements %>%
-  filter(origin_zone == "NCA", destination_zone == "FMD_Free") %>%
-  group_by(origin_farm, destination_farm) %>%
-  summarize(
-    crossings = n(),
-    total_animals = sum(animals),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(total_animals))
-
-# High-risk farms (high betweenness + in NCA)
-high_risk_farms <- farm_centrality %>%
-  left_join(farm_zones, by = "farm") %>%
-  filter(zone == "NCA") %>%
-  filter(betweenness > quantile(betweenness, 0.9))
-
-print("High-risk farms for targeted surveillance:")
-print(high_risk_farms)`
+cat("\\nInter-regional movement summary:\\n")
+print(regional_edges)`
 
   return (
     <div className="space-y-8">
@@ -199,15 +313,16 @@ print(high_risk_farms)`
         <CodeBlock code={riskAnalysisCode} language="r" title="Identify high-risk pathways" />
       </section>
 
-      <Exercise title="Final Exercise: Analyze Your Movement Network">
-        <p className="mb-3">Using the complete synthetic LITS dataset:</p>
+      <Exercise title="Final Exercise: Analyze NCA Movement Network">
+        <p className="mb-3">Using the real NCA 2023 LITS data (35,970 movements):</p>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
-          <li>Build the full movement network</li>
-          <li>Calculate centrality measures for all farms</li>
-          <li>Identify the top 5 farms by betweenness centrality</li>
-          <li>Map the VCF-crossing movements</li>
-          <li>Create a visualization highlighting high-risk farms</li>
-          <li><strong>Discussion:</strong> How would you use this analysis to prioritize surveillance?</li>
+          <li>Build the constituency-level movement network</li>
+          <li>Calculate centrality measures (in-degree, out-degree, betweenness)</li>
+          <li>Identify the top 5 constituencies by betweenness centrality</li>
+          <li>Analyze movement patterns by establishment type (Auction → Holding, etc.)</li>
+          <li>Create a geographic flow map using constituency centroids</li>
+          <li>Identify net importers vs exporters of livestock</li>
+          <li><strong>Discussion:</strong> Which establishments would you prioritize for disease surveillance? Why?</li>
         </ol>
       </Exercise>
 

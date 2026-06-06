@@ -5,79 +5,147 @@ import Exercise from '../../components/Exercise'
 export default function Day4Session1() {
   const loadDataCode = `# Load required packages
 library(tidyverse)
+library(readxl)
 library(lubridate)
 
-# Load the synthetic LITS movement data
-movements <- read_csv("data/namibia_movements.csv")
+# Load the NCA LITS movement data (cleaned version)
+movements <- read_excel("data/animal_movement_2023_rev3.xlsx")
 
 # First look at the data
 head(movements)       # First 6 rows
 glimpse(movements)    # Structure overview
-summary(movements)    # Summary statistics`
+summary(movements)    # Summary statistics
+
+# The data has these columns:
+# - date: Date of movement
+# - origin_region, origin_constituency, origin_establishment, origin_establishment_type
+# - destination_region, destination_constituency, destination_establishment, destination_establishment_type
+# - animal_type, weight (number of animals)`
 
   const dplyrCode = `# Filter: Keep only cattle movements
 cattle_moves <- movements %>%
-  filter(species == "Cattle")
+  filter(animal_type == "Cattle")
 
 # Select: Keep only certain columns
 moves_simple <- movements %>%
-  select(movement_id, origin_farm, destination_farm, animals, date)
+  select(date, origin_region, origin_constituency,
+         destination_region, destination_constituency,
+         animal_type, weight)
 
 # Mutate: Create new columns
 movements <- movements %>%
   mutate(
     month = month(date, label = TRUE),
     year = year(date),
-    large_movement = animals > 50
+    large_movement = weight > 50,
+    # Create movement type (e.g., "Auction -> Holding")
+    movement_type = paste(origin_establishment_type, "->", destination_establishment_type)
   )
 
 # Summarize: Calculate statistics by group
-monthly_summary <- movements %>%
-  group_by(month, species) %>%
+regional_summary <- movements %>%
+  group_by(origin_region, destination_region) %>%
   summarize(
     total_movements = n(),
-    total_animals = sum(animals),
-    avg_animals = mean(animals)
-  )`
+    total_animals = sum(weight),
+    avg_animals = mean(weight),
+    .groups = "drop"
+  )
 
-  const ggplotBasicCode = `# Basic bar chart: Movements by region
-ggplot(movements, aes(x = origin_region)) +
+# Most common movement types
+movement_types <- movements %>%
+  group_by(movement_type) %>%
+  summarize(count = n(), total_animals = sum(weight)) %>%
+  arrange(desc(count))`
+
+  const ggplotBasicCode = `# Bar chart: Movements by origin region
+ggplot(movements, aes(x = reorder(origin_region, origin_region, length))) +
   geom_bar(fill = "#003580") +
+  coord_flip() +  # Horizontal bars for readability
   labs(
-    title = "Livestock Movements by Origin Region",
+    title = "Livestock Movements by Origin Region (NCA 2023)",
     x = "Region",
     y = "Number of Movements"
   ) +
-  theme_minimal()`
+  theme_minimal()
+
+# By establishment type
+ggplot(movements, aes(x = origin_establishment_type, fill = destination_establishment_type)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Movements by Establishment Type",
+    x = "Origin Type",
+    y = "Count",
+    fill = "Destination Type"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))`
 
   const ggplotTimeCode = `# Time series: Movements over time
 monthly_moves <- movements %>%
   mutate(month_year = floor_date(date, "month")) %>%
   group_by(month_year) %>%
-  summarize(total = n())
+  summarize(
+    total = n(),
+    total_animals = sum(weight)
+  )
 
 ggplot(monthly_moves, aes(x = month_year, y = total)) +
-  geom_line(color = "#003580", size = 1) +
+  geom_line(color = "#003580", linewidth = 1) +
   geom_point(color = "#C8102E", size = 2) +
   labs(
-    title = "Monthly Movement Trends",
+    title = "Monthly Movement Trends (NCA 2023)",
     x = "Date",
     y = "Number of Movements"
   ) +
+  theme_minimal()
+
+# By animal type
+monthly_by_type <- movements %>%
+  mutate(month_year = floor_date(date, "month")) %>%
+  group_by(month_year, animal_type) %>%
+  summarize(total = sum(weight), .groups = "drop")
+
+ggplot(monthly_by_type, aes(x = month_year, y = total, color = animal_type)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Monthly Animals Moved by Type",
+    x = "Date",
+    y = "Number of Animals",
+    color = "Animal Type"
+  ) +
   theme_minimal()`
 
-  const ggplotMapCode = `# Load spatial packages
+  const ggplotMapCode = `# Load spatial packages and shapefiles
 library(sf)
 
-# If you have farm coordinates
-farm_locations <- movements %>%
-  distinct(origin_farm, origin_lat, origin_lon) %>%
-  st_as_sf(coords = c("origin_lon", "origin_lat"), crs = 4326)
+# Load NCA shapefiles
+constituencies <- st_read("data/shapefile/nca_const.shp")
+regions <- st_read("data/shapefile/nam_adm_region.shp")
+vcf <- st_read("data/shapefile/VCF_2018.shp")
 
-# Simple point map
-ggplot(farm_locations) +
-  geom_sf(color = "#C8102E", size = 2) +
-  labs(title = "Farm Locations") +
+# Summarize movements by constituency
+const_summary <- movements %>%
+  group_by(origin_constituency) %>%
+  summarize(
+    outgoing = n(),
+    animals_out = sum(weight)
+  )
+
+# Join to spatial data
+constituencies_data <- constituencies %>%
+  left_join(const_summary, by = c("NAME" = "origin_constituency"))
+
+# Choropleth map of outgoing movements
+ggplot() +
+  geom_sf(data = constituencies_data, aes(fill = outgoing)) +
+  geom_sf(data = vcf, color = "red", linewidth = 1.5) +
+  scale_fill_viridis_c(option = "plasma", na.value = "grey90") +
+  labs(
+    title = "Outgoing Livestock Movements by Constituency (NCA 2023)",
+    fill = "Movements",
+    caption = "Red line = Veterinary Cordon Fence"
+  ) +
   theme_minimal()`
 
   return (
@@ -162,15 +230,16 @@ ggplot(farm_locations) +
         </Callout>
       </section>
 
-      <Exercise title="Practical: Analyze LITS Movements">
-        <p className="mb-3">Using the synthetic LITS data provided:</p>
+      <Exercise title="Practical: Analyze NCA LITS Movements">
+        <p className="mb-3">Using the real NCA 2023 movement data:</p>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
-          <li>Load the movement data and explore its structure</li>
-          <li>Filter to show only movements crossing the VCF</li>
-          <li>Calculate the total animals moved per region per month</li>
-          <li>Create a bar chart showing movements by species</li>
-          <li>Create a time series of monthly movement volumes</li>
-          <li><strong>Challenge:</strong> Which region has the most outgoing movements?</li>
+          <li>Load the movement data and explore its structure (glimpse, summary)</li>
+          <li>Filter to show only cattle movements</li>
+          <li>Calculate total animals moved per region per month</li>
+          <li>Create a bar chart showing movements by establishment type</li>
+          <li>Analyze the most common movement pathways (e.g., Auction → Holding)</li>
+          <li>Create a time series of monthly movement volumes by animal type</li>
+          <li><strong>Challenge:</strong> Which constituency has the highest outgoing cattle movements?</li>
         </ol>
       </Exercise>
 

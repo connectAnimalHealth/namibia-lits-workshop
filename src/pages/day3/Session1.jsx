@@ -177,9 +177,9 @@ summary(movements)`
       </Exercise>
 
       <div className="flex justify-between">
-        <a href="#/day2/session1" className="text-namibia-blue hover:underline">← Previous: Field Testing</a>
-        <a href="#/day4/session1" className="bg-namibia-blue text-white px-6 py-2 rounded-lg hover:bg-namibia-blue/90">
-          Next: Data Visualization →
+        <a href="#/day2/session2" className="text-namibia-blue hover:underline">← Previous: EpiCollect5 API</a>
+        <a href="#/day3/session2" className="bg-namibia-blue text-white px-6 py-2 rounded-lg hover:bg-namibia-blue/90">
+          Next: Data Import & Cleaning →
         </a>
       </div>
     </div>

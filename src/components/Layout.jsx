@@ -20,7 +20,8 @@ const navigation = [
     icon: Code,
     children: [
       { name: '3.1 R/RStudio Setup', href: '/day3/session1' },
-      { name: '4.1 Data Visualization', href: '/day4/session1' },
+      { name: '3.2 Data Import & Cleaning', href: '/day3/session2' },
+      { name: '4.1 Data Wrangling & Visualization', href: '/day4/session1' },
     ]
   },
   {

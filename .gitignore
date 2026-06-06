@@ -21,3 +21,15 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# R session files
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# R outputs (keep directory structure)
+outputs/*.png
+outputs/*.csv
+outputs/*.pdf
+!outputs/.gitkeep
