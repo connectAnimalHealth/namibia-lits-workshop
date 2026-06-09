@@ -2,28 +2,28 @@ import { Info, AlertTriangle, CheckCircle, Lightbulb } from 'lucide-react'
 
 const variants = {
   info: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
+    bg: 'bg-woah-blue/5',
+    border: 'border-woah-blue/30',
+    titleColor: 'text-woah-blue',
     icon: Info,
-    iconColor: 'text-blue-500'
   },
   warning: {
-    bg: 'bg-yellow-50',
-    border: 'border-yellow-200',
+    bg: 'bg-woah-orange-light',
+    border: 'border-woah-orange/30',
+    titleColor: 'text-woah-orange',
     icon: AlertTriangle,
-    iconColor: 'text-yellow-500'
   },
   success: {
-    bg: 'bg-green-50',
-    border: 'border-green-200',
+    bg: 'bg-woah-green/5',
+    border: 'border-woah-green/30',
+    titleColor: 'text-woah-green',
     icon: CheckCircle,
-    iconColor: 'text-green-500'
   },
   tip: {
-    bg: 'bg-purple-50',
-    border: 'border-purple-200',
+    bg: 'bg-woah-gold-lighter/30',
+    border: 'border-woah-gold/30',
+    titleColor: 'text-woah-gold-dark',
     icon: Lightbulb,
-    iconColor: 'text-purple-500'
   }
 }
 
@@ -32,12 +32,12 @@ export default function Callout({ type = 'info', title, children }) {
   const Icon = variant.icon
 
   return (
-    <div className={`my-4 p-4 rounded-lg border ${variant.bg} ${variant.border}`}>
+    <div className={`my-4 rounded-lg border p-4 ${variant.bg} ${variant.border}`}>
       <div className="flex gap-3">
-        <Icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${variant.iconColor}`} />
+        <Icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${variant.titleColor}`} />
         <div>
-          {title && <p className="font-semibold mb-1">{title}</p>}
-          <div className="text-sm text-gray-700">{children}</div>
+          {title && <p className={`font-semibold mb-1 ${variant.titleColor}`}>{title}</p>}
+          <div className="text-sm text-woah-charcoal">{children}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
 import CodeBlock from '../../components/CodeBlock'
 import Callout from '../../components/Callout'
 import Exercise from '../../components/Exercise'
+import KeyConcept from '../../components/KeyConcept'
+import InlineCode from '../../components/InlineCode'
 
 export default function Day4Session1() {
   const loadDataCode = `# Load required packages
@@ -151,8 +154,8 @@ ggplot() +
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-namibia-gold bg-namibia-blue/10 px-2 py-1 rounded">Day 4 - Session 1</span>
-        <h1 className="text-3xl font-bold text-namibia-blue mt-2 mb-2">Data Wrangling & Visualization</h1>
+        <span className="text-sm font-medium text-blue-700 bg-blue-100 px-2 py-1 rounded">Day 1-2 - Session 3</span>
+        <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">Data Wrangling & Visualization</h1>
         <p className="text-gray-600">Transforming and visualizing LITS movement data</p>
       </div>
 
@@ -161,41 +164,51 @@ ggplot() +
         <CodeBlock code={loadDataCode} language="r" title="Load and inspect data" />
         
         <Callout type="info" title="The Pipe Operator: %>%">
-          The pipe <code className="bg-blue-100 px-1 rounded">%&gt;%</code> takes the output of one function and 
+          The pipe <InlineCode>{"%>%"}</InlineCode> takes the output of one function and
           passes it as input to the next. Read it as "then". Keyboard shortcut: <strong>Ctrl+Shift+M</strong>.
         </Callout>
       </section>
 
       <section>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Data Wrangling with dplyr</h2>
+
+        <KeyConcept title="The Grammar of Graphics (ggplot2)">
+          <p>
+            Just as language has grammar rules, <strong>ggplot2</strong> has a "grammar of graphics" - a systematic
+            way to build any visualization from the same building blocks. Every plot has <strong>data</strong>,
+            <strong>aesthetic mappings</strong> (what variables map to x, y, color, size), and <strong>geometric
+            objects</strong> (points, lines, bars). Once you understand these principles, you can create any
+            visualization - from simple bar charts to complex multi-panel figures - using the same consistent syntax.
+          </p>
+        </KeyConcept>
         <p className="text-gray-700 mb-4">
-          The <code className="bg-gray-100 px-1 rounded">dplyr</code> package provides intuitive verbs for 
+          The <InlineCode>dplyr</InlineCode> package provides intuitive verbs for 
           data manipulation:
         </p>
         
         <div className="grid md:grid-cols-2 gap-3 mb-4 text-sm">
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">filter()</code>
+            <code className="text-woah-orange font-bold">filter()</code>
             <p className="text-gray-600">Keep rows that match conditions</p>
           </div>
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">select()</code>
+            <code className="text-woah-orange font-bold">select()</code>
             <p className="text-gray-600">Keep or drop columns</p>
           </div>
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">mutate()</code>
+            <code className="text-woah-orange font-bold">mutate()</code>
             <p className="text-gray-600">Create or modify columns</p>
           </div>
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">summarize()</code>
+            <code className="text-woah-orange font-bold">summarize()</code>
             <p className="text-gray-600">Calculate summary statistics</p>
           </div>
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">group_by()</code>
+            <code className="text-woah-orange font-bold">group_by()</code>
             <p className="text-gray-600">Group data for summarization</p>
           </div>
           <div className="bg-white border rounded p-3">
-            <code className="text-namibia-blue font-bold">arrange()</code>
+            <code className="text-woah-orange font-bold">arrange()</code>
             <p className="text-gray-600">Sort rows</p>
           </div>
         </div>
@@ -230,7 +243,7 @@ ggplot() +
         </Callout>
       </section>
 
-      <Exercise title="Practical: Analyze NCA LITS Movements">
+      <Exercise title="Practical: Analyze NCA LITS Movements" type="individual" duration="20 min">
         <p className="mb-3">Using the real NCA 2023 movement data:</p>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Load the movement data and explore its structure (glimpse, summary)</li>
@@ -243,11 +256,17 @@ ggplot() +
         </ol>
       </Exercise>
 
-      <div className="flex justify-between">
-        <a href="#/day3/session1" className="text-namibia-blue hover:underline">← Previous: R Basics</a>
-        <a href="#/day5/session1" className="bg-namibia-blue text-white px-6 py-2 rounded-lg hover:bg-namibia-blue/90">
-          Next: Network Analysis →
-        </a>
+      {/* Navigation */}
+      <div className="flex justify-between mt-8">
+        <Link to="/day3/session2" className="text-orange-500 hover:underline">
+          ← Previous: Data Import & Wrangling
+        </Link>
+        <Link
+          to="/day1/session1"
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Next: Day 3 - Data Management Principles →
+        </Link>
       </div>
     </div>
   )

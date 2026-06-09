@@ -1,12 +1,14 @@
+import { Link } from 'react-router-dom'
 import Callout from '../../components/Callout'
 import Exercise from '../../components/Exercise'
+import KeyConcept from '../../components/KeyConcept'
 
 export default function Day2Session1() {
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-namibia-gold bg-namibia-blue/10 px-2 py-1 rounded">Day 2 - Session 1</span>
-        <h1 className="text-3xl font-bold text-namibia-blue mt-2 mb-2">Field Testing & Quality Assurance</h1>
+        <span className="text-sm font-medium text-green-700 bg-green-100 px-2 py-1 rounded">Day 3 - Session 4</span>
+        <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">Field Testing & Quality Assurance</h1>
         <p className="text-gray-600">Testing your forms and ensuring data quality</p>
       </div>
 
@@ -25,6 +27,14 @@ export default function Day2Session1() {
             <li>Form too long for busy field conditions</li>
           </ul>
         </Callout>
+
+        <KeyConcept title="Test Like a User, Not a Developer">
+          <p>
+            When testing your form, pretend you're a busy Animal Health Technician at a crush pen
+            with limited time and phone battery. Ask: Can I complete this form in 10 minutes? What
+            happens if I make a mistake? Can I go back? What if the GPS signal is weak?
+          </p>
+        </KeyConcept>
       </section>
 
       <section>
@@ -60,7 +70,7 @@ export default function Day2Session1() {
         </div>
       </section>
 
-      <Exercise title="Practical: Field Test Your Form">
+      <Exercise title="Practical: Field Test Your Form" type="pair" duration="20 min">
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Pair up with a colleague</li>
           <li>Exchange forms - test each other's creation</li>
@@ -70,11 +80,17 @@ export default function Day2Session1() {
         </ol>
       </Exercise>
 
-      <div className="flex justify-between">
-        <a href="#/day1/session2" className="text-namibia-blue hover:underline">← Previous: EpiCollect5 Overview</a>
-        <a href="#/day3/session1" className="bg-namibia-blue text-white px-6 py-2 rounded-lg hover:bg-namibia-blue/90">
-          Next: R/RStudio Setup →
-        </a>
+      {/* Navigation */}
+      <div className="flex justify-between mt-8">
+        <Link to="/day1/session3" className="text-orange-500 hover:underline">
+          ← Previous: Building Forms
+        </Link>
+        <Link
+          to="/day2/session2"
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Next: EpiCollect5 API in R →
+        </Link>
       </div>
     </div>
   )

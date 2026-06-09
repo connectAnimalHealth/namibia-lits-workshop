@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom'
 import CodeBlock from '../../components/CodeBlock'
 import Callout from '../../components/Callout'
 import Exercise from '../../components/Exercise'
+import KeyConcept from '../../components/KeyConcept'
 
 export default function Day5Session1() {
   const networkIntroCode = `# Load packages
@@ -210,8 +212,8 @@ print(regional_edges)`
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-namibia-gold bg-namibia-blue/10 px-2 py-1 rounded">Day 4.5 - Session 1</span>
-        <h1 className="text-3xl font-bold text-namibia-blue mt-2 mb-2">Movement Network Analysis</h1>
+        <span className="text-sm font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded">Day 4</span>
+        <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">Movement Network Analysis</h1>
         <p className="text-gray-600">Understanding disease spread risk through livestock movement networks</p>
       </div>
 
@@ -224,28 +226,28 @@ print(regional_edges)`
         
         <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Identify High-Risk Nodes</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Identify High-Risk Nodes</h3>
             <p className="text-sm text-gray-600">
               Farms that receive animals from many sources or serve as hubs between regions 
               are critical points for surveillance.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Trace Outbreak Pathways</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Trace Outbreak Pathways</h3>
             <p className="text-sm text-gray-600">
               During an outbreak, network analysis helps identify which farms may have been 
               exposed through direct or indirect contact.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Target Interventions</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Target Interventions</h3>
             <p className="text-sm text-gray-600">
               Focus limited resources on the most connected farms where interventions will 
               have the greatest impact.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Model Disease Spread</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Model Disease Spread</h3>
             <p className="text-sm text-gray-600">
               Simulate how a disease might spread through the network to prepare response 
               strategies.
@@ -260,29 +262,39 @@ print(regional_edges)`
         <div className="bg-gray-50 p-4 rounded-lg mb-4">
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-bold text-namibia-blue">Nodes (Vertices)</p>
+              <p className="font-bold text-woah-orange">Nodes (Vertices)</p>
               <p className="text-gray-600">Individual farms or holdings in the network</p>
             </div>
             <div>
-              <p className="font-bold text-namibia-blue">Edges (Links)</p>
+              <p className="font-bold text-woah-orange">Edges (Links)</p>
               <p className="text-gray-600">Movements between farms</p>
             </div>
             <div>
-              <p className="font-bold text-namibia-blue">Degree</p>
+              <p className="font-bold text-woah-orange">Degree</p>
               <p className="text-gray-600">Number of connections a farm has</p>
             </div>
             <div>
-              <p className="font-bold text-namibia-blue">Betweenness</p>
+              <p className="font-bold text-woah-orange">Betweenness</p>
               <p className="text-gray-600">How often a farm lies on paths between others</p>
             </div>
           </div>
         </div>
         
         <Callout type="info" title="Directed vs Undirected">
-          Livestock movement networks are <strong>directed</strong> - movements go FROM one farm TO another. 
-          This matters because a farm receiving many animals (high in-degree) has different risk than 
+          Livestock movement networks are <strong>directed</strong> - movements go FROM one farm TO another.
+          This matters because a farm receiving many animals (high in-degree) has different risk than
           one sending many animals (high out-degree).
         </Callout>
+
+        <KeyConcept title="Betweenness Centrality = Disease Spread Risk">
+          <p>
+            <strong>Betweenness centrality</strong> measures how often a node lies on the shortest path between
+            other nodes. In disease epidemiology, farms with high betweenness are critical control points -
+            they act as "bridges" connecting otherwise separate parts of the network. If disease enters a
+            high-betweenness farm, it can rapidly spread to many other farms. These are your priority
+            surveillance targets. Auctions, feedlots, and trading hubs typically have high betweenness.
+          </p>
+        </KeyConcept>
       </section>
 
       <section>
@@ -313,7 +325,7 @@ print(regional_edges)`
         <CodeBlock code={riskAnalysisCode} language="r" title="Identify high-risk pathways" />
       </section>
 
-      <Exercise title="Final Exercise: Analyze NCA Movement Network">
+      <Exercise title="Final Exercise: Analyze NCA Movement Network" type="individual" duration="30 min">
         <p className="mb-3">Using the real NCA 2023 LITS data (35,970 movements):</p>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Build the constituency-level movement network</li>
@@ -328,42 +340,50 @@ print(regional_edges)`
 
       <section>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Workshop Summary</h2>
-        <div className="bg-namibia-blue/5 border border-namibia-blue/20 rounded-lg p-6">
-          <h3 className="font-bold text-namibia-blue mb-3">What You've Learned</h3>
+        <div className="bg-woah-orange/5 border border-woah-orange/20 rounded-lg p-6">
+          <h3 className="font-bold text-woah-orange mb-3">What You've Learned</h3>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
             <div>
-              <p className="font-semibold text-gray-800">Days 1-2: Data Collection</p>
+              <p className="font-semibold text-gray-800">Days 1-2: R Programming</p>
               <ul className="text-gray-600 mt-1">
-                <li>• Data management principles</li>
-                <li>• EpiCollect5 form design</li>
-                <li>• Field testing & QA</li>
+                <li>R/RStudio basics</li>
+                <li>Data import & cleaning</li>
+                <li>Data wrangling (dplyr)</li>
+                <li>Visualization (ggplot2)</li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">Days 3-4: R Programming</p>
+              <p className="font-semibold text-gray-800">Day 3: EpiCollect5</p>
               <ul className="text-gray-600 mt-1">
-                <li>• R/RStudio basics</li>
-                <li>• Data wrangling (dplyr)</li>
-                <li>• Visualization (ggplot2)</li>
+                <li>Data management principles</li>
+                <li>EpiCollect5 form design</li>
+                <li>Field testing & QA</li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">Day 4.5: Network Analysis</p>
+              <p className="font-semibold text-gray-800">Day 4: API & Analysis</p>
               <ul className="text-gray-600 mt-1">
-                <li>• Movement networks</li>
-                <li>• Centrality measures</li>
-                <li>• Risk-based surveillance</li>
+                <li>EpiCollect5 API in R</li>
+                <li>Movement networks</li>
+                <li>Centrality measures</li>
+                <li>Risk-based surveillance</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="flex justify-between">
-        <a href="#/day4/session1" className="text-namibia-blue hover:underline">← Previous: Data Visualization</a>
-        <a href="#/" className="bg-namibia-green text-white px-6 py-2 rounded-lg hover:bg-namibia-green/90">
-          ✓ Complete - Return Home
-        </a>
+      {/* Navigation */}
+      <div className="flex justify-between mt-8">
+        <Link to="/day2/session2" className="text-orange-500 hover:underline">
+          ← Previous: EpiCollect5 API
+        </Link>
+        <Link
+          to="/day5/session2"
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Next: QGIS Visualization →
+        </Link>
       </div>
     </div>
   )

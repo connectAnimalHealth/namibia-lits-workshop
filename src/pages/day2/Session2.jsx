@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom'
 import CodeBlock from '../../components/CodeBlock'
 import Callout from '../../components/Callout'
 import Exercise from '../../components/Exercise'
+import KeyConcept from '../../components/KeyConcept'
 
 export default function Day2Session2() {
   const authCode = `# Load required packages
@@ -122,8 +124,8 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-namibia-gold bg-namibia-blue/10 px-2 py-1 rounded">Day 2 - Session 2</span>
-        <h1 className="text-3xl font-bold text-namibia-blue mt-2 mb-2">EpiCollect5 API Integration</h1>
+        <span className="text-sm font-medium text-green-700 bg-green-100 px-2 py-1 rounded">Day 3 - Session 5</span>
+        <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">EpiCollect5 API Integration</h1>
         <p className="text-gray-600">Fetching your collected data directly into R</p>
       </div>
 
@@ -135,25 +137,25 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         
         <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Automate Data Retrieval</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Automate Data Retrieval</h3>
             <p className="text-sm text-gray-600">
               Schedule scripts to fetch latest data automatically without manual downloads.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Build Dashboards</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Build Dashboards</h3>
             <p className="text-sm text-gray-600">
               Create live dashboards that update with new field data in real-time.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Reproducible Analysis</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Reproducible Analysis</h3>
             <p className="text-sm text-gray-600">
               Your R scripts always work with the latest data - no manual file handling.
             </p>
           </div>
           <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-bold text-namibia-blue mb-2">Integrate Systems</h3>
+            <h3 className="font-bold text-woah-orange mb-2">Integrate Systems</h3>
             <p className="text-sm text-gray-600">
               Connect EpiCollect data to other systems like LITS databases.
             </p>
@@ -161,9 +163,18 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         </div>
 
         <Callout type="info" title="API Access">
-          The EpiCollect5 API is <strong>read-only</strong>. You can fetch entries and media, 
+          The EpiCollect5 API is <strong>read-only</strong>. You can fetch entries and media,
           but adding/editing data must be done through the official apps.
         </Callout>
+
+        <KeyConcept title="API = Application Programming Interface">
+          <p>
+            An API is a way for programs to talk to each other. The EpiCollect5 API lets your R scripts
+            "ask" the EpiCollect server for data. Instead of manually downloading CSV files, your script
+            can fetch the latest entries automatically - perfect for dashboards or reports that need
+            to stay up-to-date.
+          </p>
+        </KeyConcept>
       </section>
 
       <section>
@@ -173,7 +184,7 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         </p>
         
         <ol className="list-decimal list-inside space-y-2 text-gray-700 mb-4">
-          <li>Go to your project on <a href="https://five.epicollect.net" className="text-namibia-blue underline" target="_blank">five.epicollect.net</a></li>
+          <li>Go to your project on <a href="https://five.epicollect.net" className="text-woah-orange underline" target="_blank">five.epicollect.net</a></li>
           <li>Click <strong>Project Details</strong> (gear icon)</li>
           <li>Go to the <strong>Developers</strong> tab</li>
           <li>Click <strong>Create Client App</strong></li>
@@ -214,7 +225,7 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse border border-gray-200">
-            <thead className="bg-namibia-blue text-white">
+            <thead className="bg-orange-500 text-white">
               <tr>
                 <th className="border border-gray-300 px-3 py-2 text-left">Format</th>
                 <th className="border border-gray-300 px-3 py-2 text-left">Use Case</th>
@@ -229,7 +240,7 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         </div>
       </section>
 
-      <Exercise title="Practical: Connect to Your EpiCollect Project">
+      <Exercise title="Practical: Connect to Your EpiCollect Project" type="individual" duration="20 min">
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Create API credentials for your test project</li>
           <li>Store credentials securely (environment variables)</li>
@@ -242,11 +253,17 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         </p>
       </Exercise>
 
-      <div className="flex justify-between">
-        <a href="#/day2/session1" className="text-namibia-blue hover:underline">← Previous: Field Testing</a>
-        <a href="#/day3/session1" className="bg-namibia-blue text-white px-6 py-2 rounded-lg hover:bg-namibia-blue/90">
-          Next: R/RStudio Setup →
-        </a>
+      {/* Navigation */}
+      <div className="flex justify-between mt-8">
+        <Link to="/day2/session1" className="text-orange-500 hover:underline">
+          ← Previous: Field Testing & QA
+        </Link>
+        <Link
+          to="/day5/session1"
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Next: Network Analysis →
+        </Link>
       </div>
     </div>
   )
