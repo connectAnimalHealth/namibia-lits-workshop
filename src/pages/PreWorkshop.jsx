@@ -606,7 +606,7 @@ export default function PreWorkshop() {
 
         <CodeBlock
           code={`# Workshop data base URL
-base_url <- "https://connectanimalhealth.github.io/namibia-lits-workshop/data/"
+base_url <- "https://woah-apps.connectanimalhealth.com/namibia-lits-workshop/data/"
 
 # Create data folder if it doesn't exist
 if (!dir.exists("data")) dir.create("data")
@@ -658,10 +658,10 @@ list.files("data")`}
           <p className="mb-2">For CSV and GeoJSON files, you can also read directly from the URL without downloading:</p>
           <pre className="bg-gray-800 text-gray-100 p-3 rounded text-sm overflow-x-auto">
 {`# Read CSV directly from URL
-farms <- read_csv("https://connectanimalhealth.github.io/namibia-lits-workshop/data/farms.csv")
+farms <- read_csv("https://woah-apps.connectanimalhealth.com/namibia-lits-workshop/data/farms.csv")
 
 # Read GeoJSON directly from URL
-constituencies <- st_read("https://connectanimalhealth.github.io/namibia-lits-workshop/data/nam_constituency_4326.geojson")`}
+constituencies <- st_read("https://woah-apps.connectanimalhealth.com/namibia-lits-workshop/data/nam_constituency_4326.geojson")`}
           </pre>
           <p className="mt-2 text-sm text-gray-600">
             Note: Excel files (.xlsx) must be downloaded first - <code>readxl</code> doesn't support URLs directly.
