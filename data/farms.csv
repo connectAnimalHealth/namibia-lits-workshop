@@ -1,0 +1,24 @@
+farm_id,farm_name,region,zone,latitude,longitude,herd_size,owner_type
+NAM-KUN-0012,Orupembe Farm,Kunene,NCA,-18.4521,13.8234,450,Communal
+NAM-KUN-0045,Epupa Holdings,Kunene,NCA,-18.3212,14.0123,380,Communal
+NAM-OSH-0023,Ondangwa Farm,Oshikoto,NCA,-18.1234,16.9876,520,Communal
+NAM-OSH-0089,Tsumeb North,Oshikoto,NCA,-18.2345,17.1234,290,Communal
+NAM-OHA-0034,Eenhana Holdings,Ohangwena,NCA,-17.5678,15.7890,410,Communal
+NAM-OHA-0112,Ondobe Farm,Ohangwena,NCA,-17.6789,15.8901,330,Communal
+NAM-KHO-0056,Windhoek East,Khomas,FMD_Free,-22.5678,17.0834,890,Commercial
+NAM-KHO-0078,Dordabis Farm,Khomas,FMD_Free,-22.4321,17.2345,1200,Commercial
+NAM-ERO-0067,Omaruru Ranch,Erongo,FMD_Free,-22.1234,14.5678,780,Commercial
+NAM-ERO-0123,Karibib Farm,Erongo,FMD_Free,-22.2345,14.6789,650,Commercial
+NAM-OMA-0078,Gobabis East,Omaheke,FMD_Free,-21.9876,19.8765,1450,Commercial
+NAM-OMA-0134,Aminuis Farm,Omaheke,FMD_Free,-21.8765,19.7654,980,Commercial
+NAM-HAR-0089,Mariental North,Hardap,FMD_Free,-24.5678,17.8901,1100,Commercial
+NAM-HAR-0090,Maltahohe Farm,Hardap,FMD_Free,-24.3456,18.0123,870,Commercial
+NAM-KAR-0090,Keetmanshoop East,Karas,FMD_Free,-26.1234,18.5678,760,Commercial
+NAM-KAR-0200,Aroab Farm,Karas,FMD_Free,-26.2345,18.6789,590,Commercial
+NAM-OTJ-0101,Grootfontein QS,Otjozondjupa,Protection,-19.5678,17.3456,0,Quarantine
+NAM-OTJ-0189,Otjiwarongo Ranch,Otjozondjupa,FMD_Free,-20.5678,17.8901,1350,Commercial
+NAM-KAV-0145,Rundu Farm,Kavango East,NCA,-18.0123,20.5678,280,Communal
+NAM-KAV-0156,Divundu Holdings,Kavango East,NCA,-18.1234,20.6789,310,Communal
+NAM-ZAM-0167,Katima Farm,Zambezi,NCA,-17.8901,24.1234,240,Communal
+NAM-ZAM-0178,Bukalo Holdings,Zambezi,NCA,-17.7890,24.2345,190,Communal
+NAM-WIN-ABT-01,Windhoek Abattoir,Khomas,FMD_Free,-22.5700,17.0800,0,Abattoir
