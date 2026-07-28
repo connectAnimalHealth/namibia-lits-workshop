@@ -8,26 +8,26 @@ export default function Day1Session1() {
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-green-700 bg-green-100 px-2 py-1 rounded">Day 3 - Session 1</span>
+        <span className="text-sm font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded">Day 4 - Afternoon</span>
         <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">Data Management Principles</h1>
         <p className="text-gray-600">Understanding the foundations of effective veterinary data collection</p>
       </div>
 
       {/* Learning Objectives */}
-      <div className="bg-gradient-to-r from-orange-500 to-amber-400 p-6 rounded-lg text-white">
-        <h2 className="text-xl font-bold mb-3">Learning Objectives</h2>
-        <p className="mb-3 text-white/90">By the end of this session, you will be able to:</p>
+      <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
+        <h2 className="text-xl font-bold mb-3 text-orange-600">Learning Objectives</h2>
+        <p className="mb-3 text-gray-700">By the end of this session, you will be able to:</p>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
             <span>Understand the data management lifecycle and its importance in veterinary epidemiology</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
             <span>Identify data quality dimensions and common challenges in field data collection</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
             <span>Apply best practices for data standardization in the LITS context</span>
           </li>
         </ul>
@@ -309,39 +309,14 @@ export default function Day1Session1() {
         </div>
       </section>
 
-      {/* Discussion Questions */}
-      <Exercise title="Discussion Exercise" type="group" duration="10 min">
-        <p className="mb-3">Discuss with your group:</p>
-        <ol className="list-decimal list-inside space-y-3 text-gray-700">
-          <li>
-            <strong>Data Collection:</strong> What are the most common data quality issues you encounter
-            in your current LITS workflow?
-          </li>
-          <li>
-            <strong>Impact:</strong> How have these data quality issues affected your ability to trace
-            animals during an outbreak investigation?
-          </li>
-          <li>
-            <strong>Improvement:</strong> If you could change one thing about how movement data is
-            collected in your region, what would it be?
-          </li>
-          <li>
-            <strong>Barriers:</strong> What prevents better data collection practices in the field?
-            (connectivity, time, training, tools?)
-          </li>
-        </ol>
-        <p className="mt-4 text-sm text-gray-500 italic">
-          Take 15 minutes to discuss, then we'll share key insights with the group.
-        </p>
-      </Exercise>
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day4/session1" className="text-orange-500 hover:underline">
-          ← Previous: Visualization (ggplot2)
+        <Link to="/analysis/session2" className="text-orange-500 hover:underline">
+          ← Previous: QGIS Visualization
         </Link>
         <Link
-          to="/day1/session2"
+          to="/epicollect-basics/session2"
           className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
           Next: EpiCollect5 Overview →

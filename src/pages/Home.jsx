@@ -1,33 +1,43 @@
 import { Link } from 'react-router-dom'
 import { MapPin, FileSpreadsheet, Code, Network, Calendar, Users, Target, Download, AlertTriangle, BookOpen, Database } from 'lucide-react'
+import ParticipantRegistration from '../components/ParticipantRegistration'
 
 const modules = [
   {
     day: 'Day 1-2',
-    title: 'Introduction to R Programming',
-    description: 'R basics, RStudio, data import & cleaning, wrangling with dplyr, and visualization with ggplot2',
+    title: 'Context & R Programming',
+    description: 'Namibia veterinary context, R basics, RStudio, data import & cleaning, wrangling with dplyr, and visualization with ggplot2',
     icon: Code,
-    href: '/day3/session1',
+    href: '/namibia-context',
     color: 'bg-blue-600',
-    sessions: '3 sessions'
+    sessions: '1.5 days'
   },
   {
-    day: 'Day 3',
+    day: 'Day 2-3',
     title: 'EpiCollect5 Data Collection',
     description: 'Data management principles, form design, building questionnaires, field testing, and API integration with R',
     icon: FileSpreadsheet,
-    href: '/day1/session1',
+    href: '/epicollect-basics/session1',
     color: 'bg-green-600',
-    sessions: '5 sessions'
+    sessions: '1 day'
+  },
+  {
+    day: 'Day 3-4',
+    title: 'Network Analysis',
+    description: 'Livestock movement network analysis, centrality measures, and risk assessment',
+    icon: Network,
+    href: '/analysis/session1',
+    color: 'bg-amber-500',
+    sessions: '1 day'
   },
   {
     day: 'Day 4',
-    title: 'Network Analysis & QGIS',
-    description: 'Livestock movement network analysis and spatial visualization with QGIS',
-    icon: Network,
-    href: '/day5/session1',
-    color: 'bg-amber-500',
-    sessions: '2 sessions'
+    title: 'QGIS Visualization',
+    description: 'Spatial visualization and mapping of movement data with QGIS',
+    icon: MapPin,
+    href: '/analysis/session2',
+    color: 'bg-purple-600',
+    sessions: '0.5 day'
   }
 ]
 
@@ -44,8 +54,11 @@ export default function Home() {
           Namibia Livestock Movement Workshop
         </h1>
         <p className="text-xl text-woah-gray max-w-2xl mx-auto">
-          A 4.5-day intensive training on data management, R programming, and
+          A 4-day intensive training on data management, R programming, and
           livestock movement analysis for veterinary epidemiologists
+        </p>
+        <p className="text-lg text-woah-orange font-medium mt-2">
+          Monday 22 June – Thursday 25 June 2025
         </p>
       </div>
 
@@ -57,7 +70,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-sm text-woah-gray">Duration</p>
-            <p className="font-semibold text-woah-charcoal">4.5 Days</p>
+            <p className="font-semibold text-woah-charcoal">4 Days</p>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-woah-gray-light flex items-center gap-3">
@@ -66,7 +79,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-sm text-woah-gray">Target Audience</p>
-            <p className="font-semibold text-woah-charcoal">State Veterinarians</p>
+            <p className="font-semibold text-woah-charcoal">Official & Para-Veterinary Professionals</p>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-woah-gray-light flex items-center gap-3">
@@ -75,7 +88,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-sm text-woah-gray">Focus</p>
-            <p className="font-semibold text-woah-charcoal">LITS Movement Data</p>
+            <p className="font-semibold text-woah-charcoal">Movement Data</p>
           </div>
         </div>
       </div>
@@ -144,6 +157,15 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </div>
+
+      {/* Workshop Participants */}
+      <div>
+        <h2 className="text-2xl font-bold text-woah-charcoal mb-4">Workshop Participants</h2>
+        <ParticipantRegistration
+          showForm={false}
+          showTable={true}
+        />
       </div>
 
       {/* Prerequisites */}

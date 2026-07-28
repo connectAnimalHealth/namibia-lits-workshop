@@ -8,21 +8,21 @@ export default function Day1Session2() {
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-sm font-medium text-green-700 bg-green-100 px-2 py-1 rounded">Day 3 - Session 2</span>
+        <span className="text-sm font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded">Day 4 - Afternoon</span>
         <h1 className="text-3xl font-bold text-woah-orange mt-2 mb-2">EpiCollect5 Overview</h1>
         <p className="text-gray-600">Mobile data collection for veterinary field work</p>
       </div>
 
       {/* Learning Objectives */}
-      <div className="bg-gradient-to-r from-orange-500 to-amber-400 p-6 rounded-lg text-white">
-        <h2 className="text-xl font-bold mb-3">Learning Objectives</h2>
+      <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
+        <h2 className="text-xl font-bold mb-3 text-orange-600">Learning Objectives</h2>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
             <span>Understand the basics of EpiCollect5 and its applications in field data collection</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
             <span>Design and deploy data collection forms on mobile devices</span>
           </li>
         </ul>
@@ -82,7 +82,7 @@ export default function Day1Session2() {
         <p>
           EpiCollect5 solves the key challenges of veterinary field data collection: it works <strong>offline</strong>
           in remote areas, captures <strong>GPS locations</strong> automatically, allows <strong>photo documentation</strong>,
-          and most importantly - it <strong>standardizes data at the point of collection</strong> through dropdowns
+          and most importantly - it <strong>standardises data at the point of collection</strong> through dropdowns
           and validation rules. This means cleaner data with less post-processing.
         </p>
       </KeyConcept>
@@ -284,14 +284,14 @@ export default function Day1Session2() {
         </div>
       </section>
 
-      <Callout type="tip" title="Perfect for Namibia Livestock Movement Data">
+      <Callout type="tip" title="Perfect for Veterinary Field Work in Namibia">
         EpiCollect5 is ideal for veterinary field work in Namibia because:
         <ul className="list-disc list-inside mt-2">
           <li>Works offline in remote areas with no connectivity</li>
           <li>GPS capture helps map farm and checkpoint locations accurately</li>
           <li>Barcode scanning for animal tags and movement permits</li>
           <li>Photo capability for documenting clinical signs</li>
-          <li>Free - no ongoing costs for DVS</li>
+          <li>Free to use</li>
         </ul>
       </Callout>
 
@@ -362,7 +362,7 @@ export default function Day1Session2() {
           </div>
 
           <div className="bg-white border-2 border-namibia-gold rounded-lg p-4">
-            <h3 className="font-bold text-woah-gold mb-2">Dropdown Standardization</h3>
+            <h3 className="font-bold text-woah-gold mb-2">Dropdown Standardisation</h3>
             <p className="text-sm text-gray-700">
               Use dropdowns instead of free text wherever possible to ensure standardized data.
               <strong> Always include an "Unknown" or "Other" option</strong> for edge cases.
@@ -418,7 +418,7 @@ export default function Day1Session2() {
             <li><strong>Question:</strong> The prompt shown to the user</li>
             <li><strong>Answer is required:</strong> Whether the field must be completed</li>
             <li><strong>Use answer as title:</strong> Use this value to identify the entry</li>
-            <li><strong>Initial answer:</strong> Pre-fill with a default value (data standardization)</li>
+            <li><strong>Initial answer:</strong> Pre-fill with a default value (data standardisation)</li>
             <li><strong>Jumps (IF-ELSE):</strong> Conditional logic based on answers</li>
           </ul>
         </Callout>
@@ -476,7 +476,7 @@ export default function Day1Session2() {
             <h3 className="font-bold text-woah-orange mb-2">API Access</h3>
             <p className="text-sm text-gray-600">
               Use the REST API to programmatically fetch data into R scripts
-              for automated reporting and dashboards. (Covered in Day 4)
+              for automated reporting and dashboards. (Covered later in the course)
             </p>
           </div>
         </div>
@@ -502,11 +502,11 @@ export default function Day1Session2() {
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day1/session1" className="text-orange-500 hover:underline">
+        <Link to="/epicollect-basics/session1" className="text-orange-500 hover:underline">
           ← Previous: Data Management
         </Link>
         <Link
-          to="/day1/session3"
+          to="/epicollect-basics/session3"
           className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
           Next: Building Forms →

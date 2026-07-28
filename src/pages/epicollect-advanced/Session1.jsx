@@ -82,11 +82,11 @@ export default function Day2Session1() {
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day1/session3" className="text-orange-500 hover:underline">
+        <Link to="/epicollect-basics/session3" className="text-orange-500 hover:underline">
           ← Previous: Building Forms
         </Link>
         <Link
-          to="/day2/session2"
+          to="/epicollect-advanced/session2"
           className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
           Next: EpiCollect5 API in R →

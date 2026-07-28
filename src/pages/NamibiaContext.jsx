@@ -1,29 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Info, ExternalLink, ChevronDown } from 'lucide-react'
+import { Info, ExternalLink } from 'lucide-react'
 import Callout from '../components/Callout'
 import NCAMap from '../components/NCAMap'
 import Modal from '../components/Modal'
-
-// Navigation button component for scrolling to next section
-function NextSectionButton({ targetId, label = "Continue" }) {
-  const scrollToSection = () => {
-    const element = document.getElementById(targetId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
-
-  return (
-    <button
-      onClick={scrollToSection}
-      className="mt-6 flex items-center gap-2 text-woah-orange hover:text-woah-orange-dark transition-colors group"
-    >
-      <span>{label}</span>
-      <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
-    </button>
-  )
-}
 
 export default function NamibiaContext() {
   const [showWoahMap, setShowWoahMap] = useState(false)
@@ -33,7 +13,7 @@ export default function NamibiaContext() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-woah-orange mb-2">Workshop Context</h1>
-        <p className="text-gray-600">The Northern Communal Areas (NCA) movement data we'll be working with during this workshop</p>
+        <p className="text-gray-600">The Northern Communal Areas (NCA) region and context that we'll be focussing on during this workshop</p>
       </div>
 
       {/* Interactive Map */}
@@ -82,7 +62,6 @@ export default function NamibiaContext() {
           Hover over constituencies to see details.
         </p>
 
-        <NextSectionButton targetId="vcf" label="Continue to VCF" />
       </section>
 
       <section id="vcf">
@@ -92,7 +71,7 @@ export default function NamibiaContext() {
           <Callout type="info" title="VCF Today">
             <ul className="list-disc list-inside space-y-1">
               <li>Stretches approximately 1,500 km across northern Namibia</li>
-              <li>Separates FMD-free zones from the NCA</li>
+              <li>Establishes an FMD-free zone in the South with large parts of the NCA making up the non FMD-free areas of Namibia </li>
               <li>All livestock movements across require permits and health certification</li>
               <li>Critical for maintaining EU export market access</li>
             </ul>
@@ -111,7 +90,6 @@ export default function NamibiaContext() {
           </Callout>
         </div>
 
-        <NextSectionButton targetId="fmd-zones" label="Continue to FMD Zones" />
       </section>
 
       <section id="fmd-zones">
@@ -281,7 +259,6 @@ export default function NamibiaContext() {
           </div>
         </div>
 
-        <NextSectionButton targetId="movement-challenge" label="Continue to Movement Challenge" />
       </section>
 
       {/* Movement Challenges */}
@@ -389,7 +366,6 @@ export default function NamibiaContext() {
           </div>
         </div>
 
-        <NextSectionButton targetId="data-sources" label="Continue to Data Sources" />
       </section>
 
       <section id="data-sources">
@@ -447,7 +423,6 @@ export default function NamibiaContext() {
           </div>
         </div>
 
-        <NextSectionButton targetId="learning-objectives" label="Continue to Learning Objectives" />
       </section>
 
       <section id="learning-objectives">
@@ -476,10 +451,10 @@ export default function NamibiaContext() {
         <div className="mt-8 p-6 bg-gray-50 rounded-lg border-2 border-orange-500 flex flex-col items-center gap-4">
           <p className="text-gray-700 text-center">Ready to start the workshop?</p>
           <Link
-            to="/day1/session1"
+            to="/r-basics/session1"
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium text-lg"
           >
-            Begin Day 1: EpiCollect5 Fundamentals →
+            Begin Day 1: Introduction to R →
           </Link>
         </div>
       </section>

@@ -3,12 +3,50 @@ import Callout from '../components/Callout'
 import KeyConcept from '../components/KeyConcept'
 import InlineCode from '../components/InlineCode'
 import CodeBlock from '../components/CodeBlock'
+import ParticipantRegistration from '../components/ParticipantRegistration'
 import { Download, Monitor, Smartphone, CheckCircle, AlertTriangle, ExternalLink, Settings, Package, FolderOpen, Map } from 'lucide-react'
+
+// Platform icons
+const WindowsIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+  </svg>
+)
+
+const AppleIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+  </svg>
+)
+
+const AndroidIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.523 15.341c-.5 0-.91-.41-.91-.91s.41-.91.91-.91.91.41.91.91-.41.91-.91.91m-11.046 0c-.5 0-.91-.41-.91-.91s.41-.91.91-.91.91.41.91.91-.41.91-.91.91m11.4-6.025l1.99-3.45c.11-.19.04-.43-.15-.54-.19-.11-.43-.04-.54.15l-2.01 3.49c-1.53-.7-3.24-1.09-5.05-1.09s-3.52.39-5.05 1.09l-2.01-3.49c-.11-.19-.35-.26-.54-.15-.19.11-.26.35-.15.54l1.99 3.45C3.01 11.11 1 14.03 1 17.37h22c0-3.34-2.01-6.26-5.123-8.054M7 22v-7H5v7c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-7H7v7m10 0v-7h-2v7c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-7h-2v7"/>
+  </svg>
+)
 
 const installPackagesCode = `# Install packages only if not already installed
 packages <- c("tidyverse", "readxl", "sf", "igraph", "lubridate", "httr", "jsonlite")
 new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
 if(length(new_packages)) install.packages(new_packages)`
+
+const installPackagesOneByOneCode = `# ALTERNATIVE: Install packages one at a time
+# If you get errors with the above method, try installing each package individually.
+# This helps identify which specific package is causing problems.
+
+install.packages("tidyverse")   # Data manipulation and visualization
+install.packages("readxl")      # Read Excel files
+install.packages("sf")          # Spatial/geographic data (may take longer)
+install.packages("igraph")      # Network analysis
+install.packages("lubridate")   # Date/time handling
+install.packages("httr")        # HTTP requests (for API calls)
+install.packages("jsonlite")    # JSON data handling
+
+# TIP: If a package fails to install:
+# 1. Read the error message carefully
+# 2. Try restarting R/RStudio and installing again
+# 3. On Windows: Run RStudio as Administrator
+# 4. On Mac: You may need Xcode command line tools (xcode-select --install)`
 
 const verifyPackagesCode = `# Load all packages to verify installation
 library(tidyverse)
@@ -51,6 +89,19 @@ export default function PreWorkshop() {
           </div>
         </div>
       </div>
+
+      {/* Participant Registration */}
+      <section className="bg-amber-50 rounded-lg border-2 border-amber-300 p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Step 0: Register as a Participant</h2>
+        <p className="text-gray-600 mb-4">
+          Before starting the software setup, please register below so we know who's attending and which
+          areas you work with. This helps us tailor examples and discussions during the workshop.
+        </p>
+        <ParticipantRegistration
+          title="Register for the Workshop"
+          showTable={true}
+        />
+      </section>
 
       {/* Overview */}
       <section>
@@ -142,7 +193,7 @@ export default function PreWorkshop() {
 
         <div className="space-y-4">
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-bold text-gray-800 mb-2">🪟 Windows</h4>
+            <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><WindowsIcon className="h-5 w-5 text-blue-600" /> Windows</h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>
                 Visit <a href="https://cran.r-project.org/bin/windows/base/" className="text-orange-500 hover:underline font-medium" target="_blank" rel="noreferrer">
@@ -157,7 +208,7 @@ export default function PreWorkshop() {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-bold text-gray-800 mb-2">🍎 macOS</h4>
+            <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><AppleIcon className="h-5 w-5 text-gray-700" /> macOS</h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>
                 Visit <a href="https://cran.r-project.org/bin/macosx/" className="text-orange-500 hover:underline font-medium" target="_blank" rel="noreferrer">
@@ -194,7 +245,7 @@ export default function PreWorkshop() {
       {/* Section 2: Install RStudio */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">2</span>
           Install RStudio
         </h2>
 
@@ -284,7 +335,7 @@ export default function PreWorkshop() {
       {/* Section 3: Install R Packages */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">3</span>
           Install Required R Packages
         </h2>
 
@@ -300,7 +351,65 @@ export default function PreWorkshop() {
           </p>
         </KeyConcept>
 
-        <h3 className="text-lg font-bold text-gray-800 mt-6 mb-3">Required Packages for This Workshop</h3>
+        {/* Basics: How to Run Code */}
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 mt-6 mb-6">
+          <h3 className="text-lg font-bold text-blue-800 mb-3">New to R? How to Copy, Paste, and Run Code</h3>
+          <p className="text-gray-700 mb-4">
+            If this is your first time using R, here's how to run the code examples from this workshop:
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+              <div>
+                <p className="font-semibold text-gray-800">Open RStudio</p>
+                <p className="text-sm text-gray-600">Search for "RStudio" on your computer and open it (NOT "R" - they're different). You'll see the 4-panel interface.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+              <div>
+                <p className="font-semibold text-gray-800">Copy the Code</p>
+                <p className="text-sm text-gray-600">
+                  On this website, hover over any code block and click the <strong>copy button</strong> (📋) that appears in the top-right corner.
+                  Or select the code text and press <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl+C</kbd> (Windows) or <kbd className="bg-gray-200 px-1 rounded text-xs">Cmd+C</kbd> (Mac).
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+              <div>
+                <p className="font-semibold text-gray-800">Paste into RStudio Console</p>
+                <p className="text-sm text-gray-600">
+                  Click in the <strong>Console panel</strong> (bottom-left, where you see the <code className="bg-gray-200 px-1 rounded">&gt;</code> prompt).
+                  Press <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl+V</kbd> (Windows) or <kbd className="bg-gray-200 px-1 rounded text-xs">Cmd+V</kbd> (Mac) to paste.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+              <div>
+                <p className="font-semibold text-gray-800">Press Enter to Run</p>
+                <p className="text-sm text-gray-600">
+                  Press <kbd className="bg-gray-200 px-1 rounded text-xs">Enter</kbd> to execute the code.
+                  You'll see output appear below. Wait for the <code className="bg-gray-200 px-1 rounded">&gt;</code> prompt to return before running more code.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 bg-white rounded-lg p-3 border border-blue-200">
+            <p className="text-sm text-blue-800">
+              <strong>Tip:</strong> Red text in the console usually means an error. Blue text is informational messages.
+              If you see an error, read it carefully - it often tells you what went wrong!
+            </p>
+          </div>
+        </div>
+
+        <h3 className="text-lg font-bold text-gray-800 mb-3">Required Packages for This Workshop</h3>
 
         <CodeBlock code={installPackagesCode} language="r" title="Install required packages" />
 
@@ -309,6 +418,19 @@ export default function PreWorkshop() {
           text scrolling by - this is normal. Wait until you see the <code className="bg-blue-100 px-1 rounded">&gt;</code> prompt
           again before continuing.
         </Callout>
+
+        <details className="mt-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <summary className="px-4 py-3 cursor-pointer font-medium text-amber-800 hover:bg-amber-100 rounded-lg">
+            Having trouble? Click here to install packages one at a time
+          </summary>
+          <div className="px-4 pb-4">
+            <p className="text-sm text-amber-700 mb-3">
+              If the batch installation above gives you errors, try installing each package individually.
+              This makes it easier to identify which package is causing problems.
+            </p>
+            <CodeBlock code={installPackagesOneByOneCode} language="r" title="Install packages one by one (troubleshooting)" />
+          </div>
+        </details>
 
         <div className="overflow-x-auto mt-6">
           <table className="w-full text-sm border-collapse border border-gray-200">
@@ -368,7 +490,7 @@ export default function PreWorkshop() {
       {/* Section 4: EpiCollect5 */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-amber-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">4</span>
           Install EpiCollect5 Mobile App
         </h2>
 
@@ -401,7 +523,7 @@ export default function PreWorkshop() {
         <div className="grid md:grid-cols-2 gap-4 mt-6">
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span className="text-2xl">🤖</span> Android
+              <AndroidIcon className="h-6 w-6 text-green-600" /> Android
             </h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>Open <strong>Google Play Store</strong></li>
@@ -422,7 +544,7 @@ export default function PreWorkshop() {
 
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <span className="text-2xl">🍎</span> iPhone/iPad
+              <AppleIcon className="h-6 w-6 text-gray-700" /> iPhone/iPad
             </h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>Open <strong>App Store</strong></li>
@@ -470,7 +592,7 @@ export default function PreWorkshop() {
       {/* Section 5: Install QGIS */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">5</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">5</span>
           Install QGIS
         </h2>
 
@@ -501,7 +623,7 @@ export default function PreWorkshop() {
 
         <div className="space-y-4 mt-4">
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-bold text-gray-800 mb-2">🪟 Windows</h4>
+            <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><WindowsIcon className="h-5 w-5 text-blue-600" /> Windows</h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>
                 Visit <a href="https://qgis.org/download/" className="text-orange-500 hover:underline font-medium" target="_blank" rel="noreferrer">
@@ -518,7 +640,7 @@ export default function PreWorkshop() {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-bold text-gray-800 mb-2">🍎 macOS</h4>
+            <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><AppleIcon className="h-5 w-5 text-gray-700" /> macOS</h4>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>
                 Visit <a href="https://qgis.org/download/" className="text-orange-500 hover:underline font-medium" target="_blank" rel="noreferrer">
@@ -555,12 +677,12 @@ export default function PreWorkshop() {
       {/* Section 6: Create Workshop Folder */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-gray-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">6</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">6</span>
           Prepare Your Workshop Folder
         </h2>
 
         <p className="text-gray-700 mb-4">
-          Organize your files before the workshop by creating a dedicated folder structure:
+          Organize your files in RStudio/R in a well defined format to make managing a dedicated folder structure easier:
         </p>
 
         <div className="bg-gray-900 text-gray-100 rounded-lg p-4 font-mono text-sm mb-4">
@@ -595,13 +717,13 @@ export default function PreWorkshop() {
       {/* Section 7: Download Workshop Data */}
       <section className="bg-white rounded-lg border p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-          <span className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">7</span>
+          <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">7</span>
           Download Workshop Data
         </h2>
 
         <p className="text-gray-700 mb-4">
           All workshop data files are hosted online and can be downloaded directly into R. Run this code
-          in RStudio to download all required files to your project's <code className="bg-gray-100 px-1 rounded">data/</code> folder.
+          in RStudio to download all required files to your project's <code className="bg-gray-100 px-1 rounded">data/</code> folder (which we will make in R if you dont have one already).
         </p>
 
         <CodeBlock
@@ -637,15 +759,16 @@ download.file(
   mode = "wb"
 )
 
+download.file(
+  paste0(base_url, "nam_fmd_4326.geojson"),
+  "data/nam_fmd_4326.geojson",
+  mode = "wb"
+)
+
 # Download sample CSV files
 download.file(
   paste0(base_url, "farms.csv"),
   "data/farms.csv"
-)
-
-download.file(
-  paste0(base_url, "namibia_movements.csv"),
-  "data/namibia_movements.csv"
 )
 
 cat("✓ All workshop data downloaded successfully!\\n")
@@ -655,13 +778,13 @@ list.files("data")`}
         />
 
         <Callout type="info" title="Alternative: Read Directly from URL">
-          <p className="mb-2">For CSV and GeoJSON files, you can also read directly from the URL without downloading:</p>
+          <p className="mb-2">For CSV and GeoJSON files, you can also read directly from the URL without downloading (note the use of package::function coding to remove need to load a full ok packages):</p>
           <pre className="bg-gray-800 text-gray-100 p-3 rounded text-sm overflow-x-auto">
-{`# Read CSV directly from URL
-farms <- read_csv("https://woah-apps.connectanimalhealth.com/namibia-lits-workshop/data/farms.csv")
+{`# Using base_url from above
+farms <- readr::read_csv(paste0(base_url, "farms.csv"))
 
-# Read GeoJSON directly from URL
-constituencies <- st_read("https://woah-apps.connectanimalhealth.com/namibia-lits-workshop/data/nam_constituency_4326.geojson")`}
+# GeoJSON files work too
+constituencies <- sf::st_read(paste0(base_url, "nam_constituency_4326.geojson"))`}
           </pre>
           <p className="mt-2 text-sm text-gray-600">
             Note: Excel files (.xlsx) must be downloaded first - <code>readxl</code> doesn't support URLs directly.
@@ -700,13 +823,13 @@ constituencies <- st_read("https://woah-apps.connectanimalhealth.com/namibia-lit
                 <td className="border border-gray-200 px-3 py-2">GeoJSON</td>
               </tr>
               <tr>
-                <td className="border border-gray-200 px-3 py-2 font-mono text-xs">farms.csv</td>
-                <td className="border border-gray-200 px-3 py-2">Sample farm locations</td>
-                <td className="border border-gray-200 px-3 py-2">CSV</td>
+                <td className="border border-gray-200 px-3 py-2 font-mono text-xs">nam_fmd_4326.geojson</td>
+                <td className="border border-gray-200 px-3 py-2">Namibia FMD outbreak data (WOAH)</td>
+                <td className="border border-gray-200 px-3 py-2">GeoJSON</td>
               </tr>
               <tr className="bg-gray-50">
-                <td className="border border-gray-200 px-3 py-2 font-mono text-xs">namibia_movements.csv</td>
-                <td className="border border-gray-200 px-3 py-2">Sample movement data for exercises</td>
+                <td className="border border-gray-200 px-3 py-2 font-mono text-xs">farms.csv</td>
+                <td className="border border-gray-200 px-3 py-2">Sample farm locations</td>
                 <td className="border border-gray-200 px-3 py-2">CSV</td>
               </tr>
             </tbody>
@@ -759,8 +882,8 @@ constituencies <- st_read("https://woah-apps.connectanimalhealth.com/namibia-lit
       {/* Navigation */}
       <div className="flex justify-between">
         <Link to="/" className="text-orange-500 hover:underline">← Back to Home</Link>
-        <Link to="/day3/session1" className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
-          Start Workshop: R Basics →
+        <Link to="/namibia-context" className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
+          Next: Workshop Context →
         </Link>
       </div>
     </div>

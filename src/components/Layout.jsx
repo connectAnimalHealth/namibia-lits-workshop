@@ -1,33 +1,34 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import { Menu, X, Home, MapPin, FileSpreadsheet, Code, Network, ChevronDown, ChevronRight, Database, Settings, BookOpen } from 'lucide-react'
+import { Menu, X, Home, MapPin, FileSpreadsheet, Code, Network, ChevronDown, ChevronRight, Database, Settings, BookOpen, Calendar, Heart, MessageSquare } from 'lucide-react'
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Pre-Workshop Setup', href: '/pre-workshop', icon: Settings },
-  { name: 'Workshop Context', href: '/namibia-context', icon: MapPin },
   {
-    name: 'Day 1-2: R Programming',
+    name: 'Day 1-2: Context & R',
     icon: Code,
     children: [
-      { name: 'Session 1: Introduction to R', href: '/day3/session1' },
-      { name: 'Session 2: Data Import & Wrangling', href: '/day3/session2' },
-      { name: 'Session 3: Visualization (ggplot2)', href: '/day4/session1' },
+      { name: 'Namibia Veterinary Context', href: '/namibia-context' },
+      { name: 'Session 1: Introduction to R', href: '/r-basics/session1' },
+      { name: 'Session 2: Data Import & Wrangling', href: '/r-basics/session2' },
+      { name: 'Session 3: Visualization (ggplot2)', href: '/r-viz/session1' },
     ]
   },
+  { name: 'Day 3: Network Analysis', href: '/analysis/session1', icon: Network },
+  { name: 'Day 4 AM: QGIS Visualization', href: '/analysis/session2', icon: MapPin },
   {
-    name: 'Day 3: EpiCollect5',
+    name: 'Day 4 PM: EpiCollect5',
     icon: FileSpreadsheet,
     children: [
-      { name: 'Session 1: Data Management', href: '/day1/session1' },
-      { name: 'Session 2: EpiCollect5 Overview', href: '/day1/session2' },
-      { name: 'Session 3: Building Forms', href: '/day1/session3' },
-      { name: 'Session 4: Field Testing & QA', href: '/day2/session1' },
-      { name: 'Session 5: EpiCollect5 API in R', href: '/day2/session2' },
+      { name: 'Data Management Principles', href: '/epicollect-basics/session1' },
+      { name: 'EpiCollect5 Overview', href: '/epicollect-basics/session2' },
+      { name: 'Building Forms', href: '/epicollect-basics/session3' },
     ]
   },
-  { name: 'Day 4: Network Analysis', href: '/day5/session1', icon: Network },
-  { name: 'Day 4: QGIS Visualization', href: '/day5/session2', icon: MapPin },
+  { name: 'Daily Program', href: '/daily-program', icon: Calendar },
+  { name: 'Workshop Feedback', href: '/feedback', icon: MessageSquare },
+  { name: 'Acknowledgements', href: '/acknowledgements', icon: Heart },
 ]
 
 function NavItem({ item, onNavigate }) {

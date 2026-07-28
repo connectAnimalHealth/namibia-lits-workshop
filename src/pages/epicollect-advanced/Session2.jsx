@@ -5,7 +5,12 @@ import Exercise from '../../components/Exercise'
 import KeyConcept from '../../components/KeyConcept'
 
 export default function Day2Session2() {
-  const authCode = `# Load required packages
+  const authCode = `# Install packages if needed
+packages <- c("httr", "jsonlite")
+install_if_missing <- packages[!packages %in% installed.packages()[,"Package"]]
+if(length(install_if_missing)) install.packages(install_if_missing)
+
+# Load required packages
 library(httr)
 library(jsonlite)
 
@@ -49,15 +54,17 @@ response <- GET(url, add_headers(
 # Check status
 http_status(response)
 
-# Read CSV data directly
-entries <- read.csv(response$url)
+# Parse CSV from response content (NOT from URL!)
+# The API returns data in the response body, not as a downloadable file
+csv_text <- content(response, "text", encoding = "UTF-8")
+entries <- read.csv(text = csv_text)
 
 # View the data
 head(entries)
 str(entries)`
 
   const jsonCode = `# Alternative: Get data as JSON (more detailed)
-library(jsonlite)
+# (jsonlite already loaded from authentication step)
 
 url_json <- paste0(
   "https://five.epicollect.net/api/export/entries/",
@@ -83,6 +90,9 @@ print(paste("Total entries:", data$meta$total))
 print(paste("Current page:", data$meta$current_page))`
 
   const paginationCode = `# Handle pagination for large datasets
+# Requires dplyr for bind_rows
+library(dplyr)
+
 fetch_all_entries <- function(project_slug, form_ref, token) {
   all_entries <- data.frame()
   page <- 1
@@ -108,7 +118,7 @@ fetch_all_entries <- function(project_slug, form_ref, token) {
     if(length(entries) > 0) {
       all_entries <- bind_rows(all_entries, entries)
       page <- page + 1
-      has_more <- !is.null(data$links$next)
+      has_more <- !is.null(data$links[["next"]])
       cat("Fetched page", page - 1, "- Total entries:", nrow(all_entries), "\n")
     } else {
       has_more <- FALSE
@@ -206,7 +216,7 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
       <section>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 3: Fetch Entries</h2>
         <CodeBlock code={fetchEntriesCode} language="r" title="Fetch entries as CSV" />
-        
+
         <p className="text-gray-700 my-4">Or fetch as JSON for more control:</p>
         <CodeBlock code={jsonCode} language="r" title="Fetch entries as JSON" />
       </section>
@@ -240,7 +250,7 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
         </div>
       </section>
 
-      <Exercise title="Practical: Connect to Your EpiCollect Project" type="individual" duration="20 min">
+      <Exercise title="Practical: Connect to Your EpiCollect Project" type="individual" duration="45 min">
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Create API credentials for your test project</li>
           <li>Store credentials securely (environment variables)</li>
@@ -255,11 +265,11 @@ all_data <- fetch_all_entries(project_slug, form_ref, token)`
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day2/session1" className="text-orange-500 hover:underline">
+        <Link to="/epicollect-advanced/session1" className="text-orange-500 hover:underline">
           ← Previous: Field Testing & QA
         </Link>
         <Link
-          to="/day5/session1"
+          to="/analysis/session1"
           className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
           Next: Network Analysis →

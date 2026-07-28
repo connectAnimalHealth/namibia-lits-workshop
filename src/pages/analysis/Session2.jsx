@@ -10,8 +10,11 @@ library(tidyverse)
 library(sf)
 library(readxl)
 
+# Create output folder if it doesn't exist
+if (!dir.exists("output")) dir.create("output")
+
 # Load constituency boundaries (already have coordinates)
-constituencies <- st_read("data/spatial/nam_constituency_4326.geojson")
+constituencies <- st_read("data/nam_constituency_4326.geojson")
 
 # Load movement data
 movements <- read_excel("data/animal_movement_2023_rev3.xlsx")
@@ -31,7 +34,9 @@ movement_flows <- movements %>%
   filter(origin != destination)  # Remove internal movements
 
 # Get centroids of constituencies for line endpoints
+# st_make_valid() fixes any invalid geometry (duplicate vertices, self-intersections)
 centroids <- constituencies %>%
+  st_make_valid() %>%
   st_centroid() %>%
   st_coordinates() %>%
   as.data.frame() %>%
@@ -131,24 +136,24 @@ jan_mar_movements <- movements %>%
         <p className="text-gray-600">Exporting movement networks and creating maps in QGIS</p>
       </div>
 
-      <section className="bg-gradient-to-r from-orange-500 to-amber-400 p-6 rounded-lg text-white">
-        <h2 className="text-xl font-bold mb-3">Learning Objectives</h2>
-        <p className="mb-3 text-white/90">By the end of this session, you will be able to:</p>
+      <section className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
+        <h2 className="text-xl font-bold mb-3 text-orange-600">Learning Objectives</h2>
+        <p className="mb-3 text-gray-700">By the end of this session, you will be able to:</p>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
             <span>Export movement network data from R as shapefiles/GeoPackages</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
             <span>Import spatial data into QGIS and navigate the interface</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
             <span>Style movement flows by volume and filter data</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">4</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">4</span>
             <span>Create a basic movement network map for reporting</span>
           </li>
         </ul>
@@ -535,15 +540,22 @@ jan_mar_movements <- movements %>%
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-          <h4 className="font-bold text-green-800 mb-2">Arrow Marker Symbology</h4>
+          <h4 className="font-bold text-green-800 mb-2">Arrow Line Symbology</h4>
           <ol className="list-decimal list-inside space-y-2 text-sm text-green-900">
             <li>In Symbology tab, click on the line symbol to open Symbol Settings</li>
-            <li>Click <strong>+ Add symbol layer</strong> at the bottom</li>
-            <li>Change the new layer type from "Simple Line" to <strong>"Marker Line"</strong></li>
-            <li>Click on the marker symbol, change to <strong>"Arrow"</strong> or <strong>"Filled Arrow"</strong></li>
-            <li>Set <strong>Marker Placement</strong> to "on last vertex" (arrow at destination)</li>
-            <li>Adjust arrow size to be proportional to line width</li>
-            <li>Ensure the arrow points in the correct direction (check "Rotate marker to follow line")</li>
+            <li>Click on <strong>"Simple Line"</strong> in the symbol layer list</li>
+            <li>Change <strong>Symbol layer type</strong> dropdown from "Simple Line" to <strong>"Arrow"</strong></li>
+            <li>Configure arrow settings:
+              <ul className="ml-6 mt-1">
+                <li>• <strong>Head type</strong>: Single (arrow at end) or Double (both ends)</li>
+                <li>• <strong>Arrow type</strong>: Plain or Sketched</li>
+                <li>• <strong>Arrow width</strong>: Width of the arrow body (e.g., 1.0 mm)</li>
+                <li>• <strong>Head length</strong>: Size of the arrowhead (e.g., 1.5 mm)</li>
+                <li>• <strong>Head thickness</strong>: Width of the arrowhead (e.g., 1.5 mm)</li>
+              </ul>
+            </li>
+            <li>Check <strong>"Curved arrows"</strong> for smoother appearance on curved lines</li>
+            <li>Click the <strong>Fill</strong> sub-layer to change arrow color</li>
           </ol>
           <p className="text-sm text-green-700 mt-3 italic">
             Tip: For cleaner maps, only show arrows on major routes - too many arrows look cluttered.
@@ -699,7 +711,7 @@ jan_mar_movements <- movements %>%
         </Callout>
       </section>
 
-      <Exercise title="Practical: Create a Movement Flow Map" type="individual" duration="30 min">
+      <Exercise title="Practical: Create a Movement Flow Map" type="individual" duration="60 min">
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Export the NCA movement data from R as a GeoPackage</li>
           <li>Import into QGIS along with constituency boundaries</li>
@@ -723,7 +735,7 @@ jan_mar_movements <- movements %>%
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
           <h4 className="font-bold text-red-800 mb-2">Styling the VCF</h4>
           <ol className="list-decimal list-inside space-y-2 text-sm text-red-900">
-            <li>Add the VCF shapefile: Layer → Add Vector Layer → <code className="bg-red-100 px-1 rounded">VCF_2018.shp</code></li>
+            <li>Add the VCF: Layer → Add Vector Layer → <code className="bg-red-100 px-1 rounded">vcf_4326.geojson</code></li>
             <li>Double-click layer → Symbology</li>
             <li>Choose a <strong>distinctive line style</strong>:
               <ul className="ml-6 mt-1">
@@ -773,14 +785,14 @@ jan_mar_movements <- movements %>%
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day5/session1" className="text-orange-500 hover:underline">
+        <Link to="/analysis/session1" className="text-orange-500 hover:underline">
           ← Previous: Network Analysis
         </Link>
         <Link
-          to="/"
-          className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+          to="/epicollect-basics/session1"
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
-          Workshop Complete! →
+          Next: EpiCollect5 →
         </Link>
       </div>
     </div>

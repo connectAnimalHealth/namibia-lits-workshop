@@ -22,28 +22,28 @@ export default function Day3Session1() {
       </div>
 
       {/* Learning Objectives */}
-      <div className="bg-gradient-to-r from-orange-500 to-amber-400 p-6 rounded-lg text-white">
-        <h2 className="text-xl font-bold mb-3">Learning Objectives</h2>
-        <p className="mb-3 text-white/90">By the end of this session, you will be able to:</p>
-        <ul className="space-y-2">
+      <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
+        <h2 className="text-xl font-bold mb-3 text-orange-600">Learning Objectives</h2>
+        <p className="mb-3 text-gray-700">By the end of this session, you will be able to:</p>
+        <ul className="space-y-2 text-gray-700">
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2 flex-shrink-0"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
             <span>Navigate the RStudio interface and understand each panel's purpose</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2 flex-shrink-0"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
             <span>Create and manage RStudio Projects for reproducible workflows</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2 flex-shrink-0"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
             <span>Write basic R code: arithmetic, variables, vectors, and functions</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2 flex-shrink-0"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
             <span>Understand R's core data types: numeric, character, logical, and factor</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-2 h-2 bg-woah-gold rounded-full mt-2 flex-shrink-0"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
             <span>Create and manipulate dataframes (R's equivalent of spreadsheets)</span>
           </li>
         </ul>
@@ -168,7 +168,7 @@ export default function Day3Session1() {
           </p>
         </KeyConcept>
 
-        <h3 className="text-lg font-bold text-gray-800 mt-6 mb-3">Creating Your Workshop Project</h3>
+        <h3 className="text-lg font-bold text-gray-800 mt-6 mb-3">Creating Your Workshop Project (a reminder)</h3>
 
         <div className="bg-white border rounded-lg p-4 mb-4">
           <ol className="space-y-3 text-gray-700">
@@ -206,6 +206,7 @@ export default function Day3Session1() {
           <li>A blank script opens in the Source panel</li>
           <li>Save it immediately: <strong>File → Save</strong> (or <kbd className="bg-gray-200 px-1 rounded">Ctrl+S</kbd>)</li>
           <li>Name it <code className="bg-gray-100 px-1 rounded">01_r_basics.R</code></li>
+          <li>Take note in the <code className="bg-gray-100 px-1 rounded">File Explorer</code> in the bottom right panel where you will see the file saved</li>
         </ol>
       </section>
 
@@ -214,7 +215,7 @@ export default function Day3Session1() {
         <h2 className="text-2xl font-bold text-gray-800 mb-4">3. R as a Calculator</h2>
 
         <p className="text-gray-700 mb-4">
-          At its simplest, R works as a powerful calculator. Let's start with basic arithmetic:
+          At its simplest, R works as a powerful calculator. Let's start with basic arithmetic. Paste the code below into your new script and run it to see how R handles calculations. Save your script after running the code!
         </p>
 
         <CodeBlock
@@ -291,6 +292,9 @@ log(10)
           <p>
             In R, we use the <strong>assignment operator</strong> <code className="bg-gray-100 px-1 rounded mx-1">&lt;-</code>
             (less-than followed by minus) to assign values to variables.
+          </p>
+          <p>
+            Variables, once created, are available to view in the <code className="bg-gray-100 px-1 rounded mx-1">Environment panel</code> and can be used in calculations, just like the original value.
           </p>
         </KeyConcept>
 
@@ -428,7 +432,11 @@ cattle[3]         # Third element
 ## [1] 23
 
 cattle[c(1, 3, 5)]  # First, third, and fifth
-## [1] 45 23 54`}
+## [1] 45 23 54
+
+range(cattle)[2] # Max value using range()
+## [1] 89`
+}
         />
 
         <Callout type="warning" title="R Uses 1-Based Indexing">
@@ -537,6 +545,75 @@ levels(fmd_zone)
             <li>Use memory efficiently for repeated values</li>
           </ul>
         </KeyConcept>
+
+        <Callout type="tip" title="See It In Action: Ordered Factors">
+          <p className="mb-2">
+            Run this code to see why ordered factors matter. Notice how the age groups appear in the plots -
+            without factors, R sorts alphabetically which rarely makes sense for categorical data!
+          </p>
+        </Callout>
+
+        <CodeBlock
+          code={`# Check and install required packages
+packages <- c("ggplot2", "patchwork")
+new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
+
+# Sample animal data with age categories
+set.seed(42)  # For reproducibility
+animals <- data.frame(
+  id = 1:30,
+  age_text = sample(c("Juvenile", "Youth", "Adult"), 30, replace = TRUE),
+  weight = c(runif(10, 50, 150), runif(10, 100, 250), runif(10, 200, 500))
+)
+
+# Plot 1: Using character/text (alphabetical order - wrong!)
+library(ggplot2)
+p1 <- ggplot(animals, aes(x = age_text, y = weight, fill = age_text)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("Adult" = "#e74c3c", "Juvenile" = "#3498db", "Youth" = "#2ecc71")) +
+  labs(title = "WITHOUT Factor",
+       subtitle = "Alphabetical: Adult, Juvenile, Youth",
+       x = "Age Category", y = "Weight (kg)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Convert to ORDERED factor with correct life-stage sequence
+animals$age_factor <- factor(
+  animals$age_text,
+  levels = c("Juvenile", "Youth", "Adult"),  # Logical biological order!
+  ordered = TRUE
+)
+
+# Plot 2: Using ordered factor (correct biological order)
+p2 <- ggplot(animals, aes(x = age_factor, y = weight, fill = age_factor)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("Juvenile" = "#3498db", "Youth" = "#2ecc71", "Adult" = "#e74c3c")) +
+  labs(title = "WITH Ordered Factor",
+       subtitle = "Logical: Juvenile → Youth → Adult",
+       x = "Age Category", y = "Weight (kg)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# Display both plots side by side
+library(patchwork)
+p1 + p2`}
+          language="r"
+          title="Demonstration: Character vs Ordered Factor in Plots"
+        />
+
+        <div className="mt-4 bg-gray-100 rounded-lg p-4">
+          <p className="text-sm text-gray-700">
+            <strong>Key insight:</strong> Without factors, R sorts alphabetically (Adult, Juvenile, Youth) -
+            which makes no biological sense! With an ordered factor, you control the sequence. This is essential for:
+          </p>
+          <ul className="text-sm text-gray-600 mt-2 list-disc list-inside">
+            <li>Life stages (Calf → Weaner → Adult)</li>
+            <li>Disease severity (Mild → Moderate → Severe)</li>
+            <li>Risk levels (Low → Medium → High)</li>
+            <li>Age categories (Juvenile → Youth → Adult)</li>
+          </ul>
+        </div>
       </section>
 
       {/* Section 7: Dataframes */}
@@ -664,7 +741,7 @@ movements[movements$origin == "Farm A", ]
       </section>
 
       {/* Exercise */}
-      <Exercise title="Practical Exercise: Your First R Script" type="individual" duration="15 min">
+      <Exercise title="Practical Exercise: Your First R Script" type="individual" duration="25 min">
         <p className="text-gray-700 mb-4">
           Create an R script that analyzes livestock data from 5 farms in the Khomas region:
         </p>
@@ -713,10 +790,67 @@ movements[movements$origin == "Farm A", ]
         </div>
       </Exercise>
 
+      {/* Answer Section */}
+      <details className="bg-amber-50 border border-amber-200 rounded-lg mb-8">
+        <summary className="px-4 py-3 cursor-pointer font-medium text-amber-800 hover:bg-amber-100 rounded-lg">
+          Click to reveal answer
+        </summary>
+        <div className="px-4 pb-4">
+          <CodeBlock
+            code={`# 01_farm_analysis.R
+# Livestock data analysis for Khomas region farms
+
+# Step 1: Create the farms dataframe
+farms <- data.frame(
+  farm = c("Okahandja Farm", "Windhoek Ranch", "Hosea Kutako", "Dordabis", "Gobabis Road"),
+  cattle = c(150, 230, 87, 310, 175),
+  goats = c(45, 0, 120, 55, 200),
+  fmd_zone = c("FMD-Free", "FMD-Free", "Protection", "FMD-Free", "Protection")
+)
+
+# View the dataframe
+farms
+
+# Step 2: Calculate total cattle across all farms
+total_cattle <- sum(farms$cattle)
+print(paste("Total cattle:", total_cattle))
+# Output: 952
+
+# Step 3: Calculate average goat count per farm
+avg_goats <- mean(farms$goats)
+print(paste("Average goats per farm:", avg_goats))
+# Output: 84
+
+# Step 4: Find farm with the most cattle
+# Method A: Find the max value, then filter for that row
+max_cattle_count <- max(farms$cattle)
+max_cattle_farm <- farms[farms$cattle == max_cattle_count, ]
+print(max_cattle_farm)
+# Shows the full row for Dordabis
+
+# Method B (alternative): Use which.max() to get the row index directly
+max_cattle_farm <- farms$farm[which.max(farms$cattle)]
+print(paste("Farm with most cattle:", max_cattle_farm, "-", max_cattle_count, "cattle"))
+# Output: Dordabis - 310 cattle
+
+# Step 5: Create total_animals column
+farms$total_animals <- farms$cattle + farms$goats
+farms
+
+# Step 6: Filter to show only Protection zone farms
+protection_farms <- farms[farms$fmd_zone == "Protection", ]
+protection_farms
+# Shows: Hosea Kutako and Gobabis Road`}
+            language="r"
+            title="Solution: 01_farm_analysis.R"
+          />
+        </div>
+      </details>
+
       {/* Navigation */}
       <div className="flex justify-between">
         <Link to="/pre-workshop" className="text-orange-500 hover:underline">← Previous: Pre-Workshop Setup</Link>
-        <Link to="/day3/session2" className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
+        <Link to="/r-basics/session2" className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
           Next: Data Import & Wrangling →
         </Link>
       </div>

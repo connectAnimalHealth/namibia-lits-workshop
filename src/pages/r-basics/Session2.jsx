@@ -15,36 +15,36 @@ export default function Day3Session2() {
       </div>
 
       {/* Learning Objectives */}
-      <div className="bg-gradient-to-r from-orange-500 to-amber-400 p-6 rounded-lg text-white">
-        <h2 className="text-xl font-bold mb-3">Learning Objectives</h2>
-        <p className="mb-3 text-white/90">By the end of this session, you will be able to:</p>
+      <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
+        <h2 className="text-xl font-bold mb-3 text-orange-600">Learning Objectives</h2>
+        <p className="mb-3 text-gray-700">By the end of this session, you will be able to:</p>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">1</span>
             <span>Import data from CSV files, Excel spreadsheets, and the clipboard</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">2</span>
             <span>Understand working directories and file paths in R</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">3</span>
             <span>Inspect and explore data structure, dimensions, and content</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">4</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">4</span>
             <span>Use the tidyverse for data manipulation (filter, select, mutate, arrange)</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">5</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">5</span>
             <span>Handle missing values and inconsistent data</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">6</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">6</span>
             <span>Create summary statistics and counts using group_by and summarise</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">7</span>
+            <span className="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0">7</span>
             <span>Join datasets and clean inconsistent naming (e.g., matching constituency names to GIDs)</span>
           </li>
         </ul>
@@ -84,7 +84,7 @@ list.files()
 
 # List files in the data subfolder
 list.files("data")
-# [1] "movements_2023.csv"    "lits_data.xlsx"    "regions.csv"`}
+# [1] "animal_movement_2023_rev3.xlsx"    "lits_data.xlsx"    "regions.csv"`}
           language="r"
           title="Working Directory Commands"
         />
@@ -131,29 +131,27 @@ list.files("data")
           code={`# Load the readr package (part of tidyverse)
 library(tidyverse)
 
-# Import a CSV file from your data folder
-movements <- read_csv("data/movements_2023.csv")
+# Import the farms CSV file
+farms <- read_csv("data/farms.csv")
 
 # You'll see a message about column specifications:
-# Rows: 35970 Columns: 12
+# Rows: 23 Columns: 8
 # ── Column specification ────────────────────────────────────
 # Delimiter: ","
-# chr  (8): origin_region, origin_constituency, destination_region, ...
-# dbl  (3): permit_number, num_cattle, num_goats
-# date (1): movement_date
+# chr (5): farm_id, farm_name, region, zone, owner_type
+# dbl (3): latitude, longitude, herd_size
 #
 # ℹ Use spec() to retrieve the full column specification
-# ℹ Specify the column types or set show_col_types = FALSE
 
-# The data is now stored in 'movements'
-movements
-# # A tibble: 35,970 × 12
-#    permit_number movement_date origin_region origin_constituency ...
-#            <dbl> <date>        <chr>         <chr>               ...
-#  1         10234 2023-01-03    Kunene        Epupa               ...
-#  2         10235 2023-01-03    Kunene        Opuwo Rural         ...
-#  3         10236 2023-01-04    Omusati       Outapi              ...
-# # ℹ 35,967 more rows`}
+# View the data
+farms
+# # A tibble: 23 × 8
+#    farm_id  farm_name       region    zone  owner_type latitude longitude herd_size
+#    <chr>    <chr>           <chr>     <chr> <chr>         <dbl>     <dbl>     <dbl>
+#  1 FM001    Okahandja Farm  Otjozon…  Free  Commercial   -21.98     16.92       450
+#  2 FM002    Etosha Ranch    Kunene    NCA   Communal     -18.85     15.91       120
+#  3 FM003    Waterberg Est   Otjozon…  Free  Commercial   -20.50     17.28       680
+# # ℹ 20 more rows`}
           language="r"
           title="Importing CSV Files"
         />
@@ -173,28 +171,62 @@ movements
           with data from government systems like LITS.
         </p>
 
+        <Callout type="warning" title="Excel Import is Silent!">
+          <p>
+            Unlike <code>read_csv()</code>, the <code>read_excel()</code> function doesn't automatically
+            show column specifications. You need to use <code>glimpse()</code> or <code>str()</code> to
+            inspect your data after importing.
+          </p>
+        </Callout>
+
         <CodeBlock
-          code={`# Load the readxl package
-library(readxl)
+          code={`# Load required packages
+library(readxl)  # For reading Excel files
+library(dplyr)   # For data manipulation (includes glimpse)
 
-# Import an Excel file
-lits_data <- read_excel("data/lits_data.xlsx")
+# Import the workshop movement data
+movements <- read_excel("data/animal_movement_2023_rev3.xlsx")
 
-# Specify which sheet to import (if multiple sheets)
-sheet2_data <- read_excel("data/lits_data.xlsx", sheet = "Movements_2023")
-
-# Or specify by sheet number
-sheet2_data <- read_excel("data/lits_data.xlsx", sheet = 2)
-
-# Skip header rows if needed (common in government reports)
-data_skip <- read_excel("data/report.xlsx", skip = 3)
+# IMPORTANT: read_excel() is silent - no output shown!
+# Always inspect your data after importing:
+glimpse(movements)
+# Rows: 35,970
+# Columns: 11
+# $ date                         <dttm> 2023-12-12, 2023-12-10, ...
+# $ origin_region                <chr> "Oshikoto", "Oshikoto", ...
+# $ origin_constituency          <chr> "Nehale LyaMpingana", "Guinas", ...
+# $ origin_establishment         <chr> "Okathitu Ka Maimbo", "Onandjaba", ...
+# $ origin_establishment_type    <chr> "Farm", "Communal", ...
+# $ animal_type                  <chr> "Cattle", "Cattle", ...
+# $ weight                       <dbl> 15, 42, 8, 23, 5, 12, ...
+# $ destination_region           <chr> "Oshikoto", "Oshikoto", ...
+# $ destination_constituency     <chr> "Nehale LyaMpingana", "Guinas", ...
+# $ destination_establishment    <chr> "Farm B", "Auction Yard", ...
+# $ destination_establishment_type <chr> "Farm", "Auction", ...
 
 # View all sheet names in an Excel file
-excel_sheets("data/lits_data.xlsx")
-# [1] "Summary"   "Movements_2023"   "Movements_2024"   "Regions"`}
+excel_sheets("data/animal_movement_2023_rev3.xlsx")
+
+# Import a specific sheet by name
+# movements <- read_excel("data/file.xlsx", sheet = "Sheet1")
+
+# Or by sheet number
+# movements <- read_excel("data/file.xlsx", sheet = 2)
+
+# Skip header rows if needed (common in government reports)
+# data <- read_excel("data/report.xlsx", skip = 3)`}
           language="r"
           title="Importing Excel Files"
         />
+
+        <Callout type="info" title="About the 'weight' Column">
+          <p>
+            In this LITS dataset, the <code>weight</code> column represents the <strong>number of
+            animals</strong> moved, not a physical weight in kilograms. This naming comes from the
+            cleaned LITS database provided. When you see <code>sum(weight)</code> or <code>total_animals</code>
+            in our analysis, we're counting total animals moved.
+          </p>
+        </Callout>
 
         <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">2.3 Importing from Clipboard</h3>
 
@@ -252,34 +284,34 @@ quick_data <- read.delim("clipboard", header = TRUE)
         <KeyConcept title="The First Thing After Import">
           <p>
             <strong>Never assume your data imported correctly.</strong> Always run <code>glimpse()</code> or
-            <code>str()</code> immediately after import to verify the data structure, column types, and
+            <code> str()</code> immediately after import to verify the data structure, column types, and
             check for obvious problems. This 30-second check can save hours of debugging later.
           </p>
         </KeyConcept>
 
         <CodeBlock
-          code={`# Load the tidyverse (if not already loaded)
+          code={`# Load required packages
 library(tidyverse)
+library(readxl)
 
-# Import our sample data
-movements <- read_csv("data/movements_2023.csv")
+# Import the workshop movement data
+movements <- read_excel("data/animal_movement_2023_rev3.xlsx")
 
-# ESSENTIAL: First look at your data
+# ESSENTIAL: First look at your data (read_excel is silent!)
 glimpse(movements)
 # Rows: 35,970
-# Columns: 12
-# $ permit_number          <dbl> 10234, 10235, 10236, 10237, 10238, ...
-# $ movement_date          <date> 2023-01-03, 2023-01-03, 2023-01-04, ...
-# $ origin_region          <chr> "Kunene", "Kunene", "Omusati", ...
-# $ origin_constituency    <chr> "Epupa", "Opuwo Rural", "Outapi", ...
-# $ destination_region     <chr> "Kunene", "Oshana", "Omusati", ...
-# $ destination_constituency <chr> "Opuwo Urban", "Oshakati East", ...
-# $ origin_type            <chr> "Farm", "Auction", "Farm", ...
-# $ destination_type       <chr> "Auction", "Farm", "Abattoir", ...
-# $ animal_species         <chr> "Cattle", "Cattle", "Goats", ...
-# $ num_animals            <dbl> 15, 42, 8, 23, 5, 12, 67, 34, ...
-# $ fmd_zone               <chr> "NCA", "NCA", "NCA", "NCA", ...
-# $ vet_district           <chr> "Opuwo", "Opuwo", "Outapi", ...`}
+# Columns: 11
+# $ date                         <dttm> 2023-12-12, 2023-12-10, ...
+# $ origin_region                <chr> "Oshikoto", "Oshikoto", ...
+# $ origin_constituency          <chr> "Nehale LyaMpingana", "Guinas", ...
+# $ origin_establishment         <chr> "Okathitu Ka Maimbo", "Onandjaba", ...
+# $ origin_establishment_type    <chr> "Farm", "Communal", ...
+# $ animal_type                  <chr> "Cattle", "Cattle", ...
+# $ weight                       <dbl> 15, 42, 8, 23, 5, 12, ...
+# $ destination_region           <chr> "Oshikoto", "Oshikoto", ...
+# $ destination_constituency     <chr> "Nehale LyaMpingana", "Guinas", ...
+# $ destination_establishment    <chr> "Farm B", "Auction Yard", ...
+# $ destination_establishment_type <chr> "Farm", "Auction", ...`}
           language="r"
           title="Using glimpse() - Your Best Friend"
         />
@@ -343,44 +375,43 @@ glimpse(movements)
         <CodeBlock
           code={`# See the first 10 rows
 head(movements, 10)
-# # A tibble: 10 × 12
-#    permit_number movement_date origin_region ...
-#            <dbl> <date>        <chr>         ...
-#  1         10234 2023-01-03    Kunene        ...
-#  2         10235 2023-01-03    Kunene        ...
+# # A tibble: 10 × 11
+#    date                origin_region origin_constituency origin_establishment ...
+#    <dttm>              <chr>         <chr>               <chr>                ...
+#  1 2023-12-12 00:00:00 Oshikoto      Nehale LyaMpingana  Okathitu Ka Maimbo   ...
+#  2 2023-12-10 00:00:00 Oshikoto      Guinas              Onandjaba            ...
 # ... (8 more rows)
 
 # Check dimensions
 dim(movements)
-# [1] 35970    12    <- 35,970 rows, 12 columns
+# [1] 35970    11    <- 35,970 rows, 11 columns
 
 # Get column names (useful for exact spelling)
 names(movements)
-# [1] "permit_number"           "movement_date"
-# [3] "origin_region"           "origin_constituency"
-# [5] "destination_region"      "destination_constituency"
-# [7] "origin_type"             "destination_type"
-# [9] "animal_species"          "num_animals"
-# [11] "fmd_zone"               "vet_district"
+# [1] "date"                           "origin_region"
+# [3] "origin_constituency"            "origin_establishment"
+# [5] "origin_establishment_type"      "animal_type"
+# [7] "weight"                         "destination_region"
+# [9] "destination_constituency"       "destination_establishment"
+# [11] "destination_establishment_type"
 
 # Summary statistics
 summary(movements)
-#  permit_number    movement_date        origin_region
-#  Min.   : 10234   Min.   :2023-01-01   Length:35970
-#  1st Qu.: 19218   1st Qu.:2023-04-02   Class :character
-#  Median : 28202   Median :2023-07-02   Mode  :character
-#  Mean   : 28202   Mean   :2023-07-02
-#  3rd Qu.: 37185   3rd Qu.:2023-10-01
-#  Max.   : 46169   Max.   :2023-12-31
+#       date                     origin_region      origin_constituency
+#  Min.   :2023-01-01 00:00:00   Length:35970       Length:35970
+#  1st Qu.:2023-04-11 00:00:00   Class :character   Class :character
+#  Median :2023-07-04 00:00:00   Mode  :character   Mode  :character
+#  Mean   :2023-07-04 16:09:24
+#  3rd Qu.:2023-09-28 00:00:00
+#  Max.   :2023-12-31 00:00:00
 #
-#  num_animals       fmd_zone
-#  Min.   :   1.0    Length:35970
-#  1st Qu.:   5.0    Class :character
-#  Median :  12.0    Mode  :character
-#  Mean   :  23.7
-#  3rd Qu.:  28.0
-#  Max.   :1250.0
-#  NA's   :   47     <- Note: 47 missing values!`}
+#  origin_establishment       weight        animal_type
+#  Length:35970           Min.   :   1.0   Length:35970
+#  Class :character       1st Qu.:   1.0   Class :character
+#  Mode  :character       Median :   2.0   Mode  :character
+#                         Mean   :   6.2
+#                         3rd Qu.:   4.0
+#                         Max.   :4015.0`}
           language="r"
           title="Essential Inspection Functions"
         />
@@ -392,44 +423,92 @@ summary(movements)
           data quality issues like inconsistent spelling.
         </p>
 
+        <Callout type="info" title="Load dplyr for Piping">
+          <p>
+            This section introduces the pipe operator (<code>%&gt;%</code>) and <code>count()</code> function.
+            Make sure you have dplyr loaded:
+          </p>
+          <code className="block bg-white p-2 rounded mt-2">library(dplyr)</code>
+        </Callout>
+
         <CodeBlock
-          code={`# See unique values in a column
+          code={`# Make sure dplyr is loaded
+library(dplyr)
+
+# See unique values in a column
 unique(movements$origin_region)
-# [1] "Kunene"        "Omusati"       "Oshana"        "Ohangwena"
-# [5] "Oshikoto"      "Kavango East"  "Kavango West"  "Zambezi"
+# [1] "Oshikoto"     "Oshana"       "Kavango West" "Kavango East" "Kunene"
+# [6] "Zambezi"      "Ohangwena"    "Omusati"      "Otjozondjupa"
 
 # How many unique values?
 length(unique(movements$origin_region))
-# [1] 8
+# [1] 9
 
 # Better: count occurrences of each value
 movements %>%
   count(origin_region, sort = TRUE)
-# # A tibble: 8 × 2
+# # A tibble: 9 × 2
 #   origin_region     n
 #   <chr>         <int>
-# 1 Omusati        8234
-# 2 Oshana         7892
-# 3 Kunene         6543
-# 4 Oshikoto       5678
-# 5 Ohangwena      4321
-# 6 Kavango East   1876
-# 7 Zambezi        1012
-# 8 Kavango West    414
+# 1 Kavango West   9331
+# 2 Oshikoto       8100
+# 3 Ohangwena      4515
+# 4 Omusati        3253
+# 5 Kunene         2796
+# 6 Kavango East   2598
+# 7 Oshana         2591
+# 8 Zambezi        2369
+# 9 Otjozondjupa    417
 
-# Check animal species
+# Check animal types
 movements %>%
-  count(animal_species, sort = TRUE)
+  count(animal_type, sort = TRUE)
 # # A tibble: 4 × 2
-#   animal_species     n
-#   <chr>          <int>
-# 1 Cattle         28456
-# 2 Goats           5234
-# 3 Sheep           1876
-# 4 Pigs             404`}
+#   animal_type     n
+#   <chr>       <int>
+# 1 Cattle      32010
+# 2 Goat         2836
+# 3 Sheep        1120
+# 4 Pig             4`}
           language="r"
           title="Exploring Unique Values"
         />
+
+        <h4 className="text-lg font-semibold text-gray-800 mt-6 mb-3">Exercise: Finding Most Common Auction Destinations</h4>
+
+        <p className="text-gray-700 mb-3">
+          Let's explore which establishments receive the most animals from auctions. This combines
+          several techniques: checking data structure, exploring unique values, filtering, and counting.
+        </p>
+
+        <CodeBlock
+          code={`# Step 1: Check the structure of our data
+str(movements)
+
+# Step 2: What destination establishment types exist?
+unique(movements$destination_establishment_type)
+# [1] "Farm"    "Communal"    "Auction Point"    "Quarantine"    ...
+
+# Step 3: Filter to only auction movements
+auction_movements <- movements[movements$destination_establishment_type == 'Auction Point', ]
+
+# Step 4: Count which destinations receive the most auction animals
+auction_movements %>%
+  count(destination_establishment, sort = TRUE)
+# This shows which specific auction points receive the most animals
+# Very useful for understanding trade patterns and disease surveillance priorities!`}
+          language="r"
+          title="Auction Destination Analysis"
+        />
+
+        <Callout type="success" title="Epidemiological Insight">
+          <p>
+            Identifying high-volume auction points is critical for disease surveillance.
+            These locations represent concentration points where animals from many sources
+            mix - making them both high-risk for disease spread and high-value for
+            surveillance activities.
+          </p>
+        </Callout>
       </section>
 
       {/* Tidyverse Section */}
@@ -509,17 +588,17 @@ movements %>%
         <CodeBlock
           code={`# Filter for cattle movements only
 cattle_movements <- movements %>%
-  filter(animal_species == "Cattle")
+  filter(animal_type == "Cattle")
 
 # How many cattle movements?
 nrow(cattle_movements)
-# [1] 28456
+# [1] 32010
 
 # Filter for Kunene region in 2023
 kunene_2023 <- movements %>%
   filter(origin_region == "Kunene",
-         movement_date >= "2023-01-01",
-         movement_date <= "2023-12-31")
+         date >= "2023-01-01",
+         date <= "2023-12-31")
 
 # Multiple conditions with OR (|)
 northern_regions <- movements %>%
@@ -531,18 +610,18 @@ northern_regions <- movements %>%
 northern_regions <- movements %>%
   filter(origin_region %in% c("Kunene", "Omusati", "Oshana"))
 
-# Movements with more than 50 animals
+# Movements with more than 50 animals (weight > 50)
 large_movements <- movements %>%
-  filter(num_animals > 50)
+  filter(weight > 50)
 
-# Combine conditions: Cattle movements with 50+ animals from Kunene
+# Combine conditions: Cattle movements with weight > 50 from Kunene
 specific_movements <- movements %>%
-  filter(animal_species == "Cattle",
-         num_animals > 50,
+  filter(animal_type == "Cattle",
+         weight > 50,
          origin_region == "Kunene")
 
 nrow(specific_movements)
-# [1] 342`}
+# [1] 23`}
           language="r"
           title="filter() Examples"
         />
@@ -567,31 +646,31 @@ nrow(specific_movements)
         <CodeBlock
           code={`# Select specific columns
 movements %>%
-  select(movement_date, origin_region, destination_region, num_animals)
+  select(date, origin_region, destination_region, weight)
 # # A tibble: 35,970 × 4
-#    movement_date origin_region destination_region num_animals
-#    <date>        <chr>         <chr>                    <dbl>
-#  1 2023-01-03    Kunene        Kunene                      15
-#  2 2023-01-03    Kunene        Oshana                      42
-#  3 2023-01-04    Omusati       Omusati                      8
+#    date                origin_region destination_region weight
+#    <dttm>              <chr>         <chr>               <dbl>
+#  1 2023-12-12 00:00:00 Oshikoto      Oshikoto               15
+#  2 2023-12-10 00:00:00 Oshikoto      Oshikoto               42
+#  3 2023-12-08 00:00:00 Omusati       Omusati                 8
 # # ... more rows
 
 # Select a range of columns
 movements %>%
-  select(permit_number:origin_constituency)
+  select(date:origin_establishment)
 
 # Select all columns EXCEPT certain ones
 movements %>%
-  select(-permit_number, -vet_district)
+  select(-origin_establishment, -destination_establishment)
 
 # Select columns that start with "origin"
 movements %>%
   select(starts_with("origin"))
-# # A tibble: 35,970 × 3
-#    origin_region origin_constituency origin_type
-#    <chr>         <chr>               <chr>
-#  1 Kunene        Epupa               Farm
-#  2 Kunene        Opuwo Rural         Auction
+# # A tibble: 35,970 × 4
+#    origin_region origin_constituency origin_establishment origin_establishment_type
+#    <chr>         <chr>               <chr>                <chr>
+#  1 Oshikoto      Nehale LyaMpingana  Okathitu Ka Maimbo   Farm
+#  2 Oshikoto      Guinas              Onandjaba            Communal
 # ...
 
 # Other helper functions:
@@ -605,20 +684,24 @@ movements %>%
         <h3 className="text-xl font-semibold text-gray-800 mt-8 mb-3">4.4 mutate() - Create New Columns</h3>
 
         <CodeBlock
-          code={`# Add new columns
+          code={`# Load required packages for date manipulation
+library(dplyr)     # For mutate, case_when, etc.
+library(lubridate) # For year(), month() date functions
+
+# Add new columns
 movements_enhanced <- movements %>%
   mutate(
     # Extract year and month from date
-    year = year(movement_date),
-    month = month(movement_date),
-    month_name = month(movement_date, label = TRUE),
+    year = year(date),
+    month = month(date),
+    month_name = month(date, label = TRUE),
 
     # Categorize movement size
     size_category = case_when(
-      num_animals <= 10  ~ "Small",
-      num_animals <= 50  ~ "Medium",
-      num_animals <= 100 ~ "Large",
-      TRUE               ~ "Very Large"
+      weight <= 5   ~ "Small",
+      weight <= 20  ~ "Medium",
+      weight <= 100 ~ "Large",
+      TRUE          ~ "Very Large"
     ),
 
     # Flag cross-region movements
@@ -627,16 +710,16 @@ movements_enhanced <- movements %>%
 
 # Check our new columns
 movements_enhanced %>%
-  select(movement_date, year, month_name, num_animals, size_category, is_cross_region) %>%
+  select(date, year, month_name, weight, size_category, is_cross_region) %>%
   head(5)
 # # A tibble: 5 × 6
-#   movement_date  year month_name num_animals size_category is_cross_region
-#   <date>        <dbl> <ord>            <dbl> <chr>         <lgl>
-# 1 2023-01-03     2023 Jan                 15 Medium        FALSE
-# 2 2023-01-03     2023 Jan                 42 Medium        TRUE
-# 3 2023-01-04     2023 Jan                  8 Small         FALSE
-# 4 2023-01-04     2023 Jan                 23 Medium        TRUE
-# 5 2023-01-05     2023 Jan                  5 Small         TRUE`}
+#   date                 year month_name weight size_category is_cross_region
+#   <dttm>              <dbl> <ord>       <dbl> <chr>         <lgl>
+# 1 2023-12-12 00:00:00  2023 Dec            15 Medium        FALSE
+# 2 2023-12-10 00:00:00  2023 Dec            42 Large         FALSE
+# 3 2023-12-08 00:00:00  2023 Dec             8 Medium        FALSE
+# 4 2023-12-05 00:00:00  2023 Dec            23 Large         TRUE
+# 5 2023-12-03 00:00:00  2023 Dec             5 Small         TRUE`}
           language="r"
           title="mutate() Examples"
         />
@@ -654,32 +737,32 @@ movements_enhanced %>%
         <CodeBlock
           code={`# Sort by date (oldest first - ascending is default)
 movements %>%
-  arrange(movement_date) %>%
+  arrange(date) %>%
   head(3)
-# # A tibble: 3 × 12
-#   permit_number movement_date origin_region ...
-#           <dbl> <date>        <chr>         ...
-# 1         10234 2023-01-01    Kunene        ...
-# 2         10235 2023-01-01    Omusati       ...
-# 3         10236 2023-01-01    Oshana        ...
+# # A tibble: 3 × 11
+#   date                origin_region origin_constituency ...
+#   <dttm>              <chr>         <chr>               ...
+# 1 2023-01-01 00:00:00 Kunene        Epupa               ...
+# 2 2023-01-01 00:00:00 Omusati       Outapi              ...
+# 3 2023-01-01 00:00:00 Oshana        Oshakati East       ...
 
 # Sort by date descending (newest first)
 movements %>%
-  arrange(desc(movement_date)) %>%
+  arrange(desc(date)) %>%
   head(3)
-# # A tibble: 3 × 12
-#   permit_number movement_date origin_region ...
-#           <dbl> <date>        <chr>         ...
-# 1         46167 2023-12-31    Kavango East  ...
-# 2         46168 2023-12-31    Oshikoto      ...
-# 3         46169 2023-12-31    Omusati       ...
+# # A tibble: 3 × 11
+#   date                origin_region origin_constituency ...
+#   <dttm>              <chr>         <chr>               ...
+# 1 2023-12-31 00:00:00 Kavango East  Rundu Urban         ...
+# 2 2023-12-31 00:00:00 Oshikoto      Guinas              ...
+# 3 2023-12-31 00:00:00 Omusati       Outapi              ...
 
 # Sort by multiple columns
 movements %>%
-  arrange(origin_region, desc(num_animals)) %>%
+  arrange(origin_region, desc(weight)) %>%
   head()
 # First sorts by region alphabetically, then within each region
-# sorts by number of animals (highest first)`}
+# sorts by weight (highest first)`}
           language="r"
           title="arrange() Examples"
         />
@@ -693,59 +776,61 @@ movements %>%
 
         <CodeBlock
           code={`# Total animals moved per region
+# Remember: "weight" column = number of animals moved
 movements %>%
   group_by(origin_region) %>%
   summarise(
-    n_movements = n(),                    # Count rows
-    total_animals = sum(num_animals, na.rm = TRUE),  # Sum animals
-    avg_animals = mean(num_animals, na.rm = TRUE),   # Average per movement
-    max_animals = max(num_animals, na.rm = TRUE)     # Largest movement
+    n_movements = n(),                    # Count of movement records
+    total_animals = sum(weight, na.rm = TRUE),  # Total animals moved
+    avg_animals = mean(weight, na.rm = TRUE),   # Avg animals per movement
+    max_animals = max(weight, na.rm = TRUE)     # Largest single movement
   ) %>%
-  arrange(desc(total_animals))
-# # A tibble: 8 × 5
+  arrange(desc(n_movements))
+# # A tibble: 9 × 5
 #   origin_region n_movements total_animals avg_animals max_animals
 #   <chr>               <int>         <dbl>       <dbl>       <dbl>
-# 1 Omusati              8234        234567        28.5        1250
-# 2 Oshana               7892        198234        25.1         890
-# 3 Kunene               6543        167890        25.7         756
-# 4 Oshikoto             5678        145678        25.7         678
-# 5 Ohangwena            4321        112345        26.0         543
-# 6 Kavango East         1876         45678        24.3         432
-# 7 Zambezi              1012         23456        23.2         234
-# 8 Kavango West          414          8765        21.2         156
+# 1 Kavango West         9331        50822        5.4        643
+# 2 Oshikoto             8100        45714        5.6       1101
+# 3 Ohangwena            4515        23952        5.3        415
+# 4 Omusati              3253        15956        4.9        595
+# 5 Kunene               2796        21439        7.7        550
+# 6 Kavango East         2598        25897       10.0       4015
+# 7 Oshana               2591        11640        4.5        247
+# 8 Zambezi              2369        25209       10.6        666
+# 9 Otjozondjupa          417         2385        5.7        248
 
 # Group by multiple variables
 movements %>%
-  group_by(origin_region, animal_species) %>%
+  group_by(origin_region, animal_type) %>%
   summarise(
     n_movements = n(),
-    total_animals = sum(num_animals, na.rm = TRUE)
+    total_animals = sum(weight, na.rm = TRUE)
   )
 # # A tibble: 32 × 4
-# # Groups:   origin_region [8]
-#   origin_region animal_species n_movements total_animals
-#   <chr>         <chr>                <int>         <dbl>
-# 1 Kavango East  Cattle                1543         38234
-# 2 Kavango East  Goats                  234          5432
-# 3 Kavango East  Pigs                    56          1234
-# 4 Kavango East  Sheep                   43           778
+# # Groups:   origin_region [9]
+#   origin_region animal_type n_movements total_animals
+#   <chr>         <chr>             <int>        <dbl>
+# 1 Kavango East  Cattle             2516        21193
+# 2 Kavango East  Goat                 71         4529
+# 3 Kavango East  Sheep                11          175
+# 4 Kavango West  Cattle             8916        47791
 # ...
 
-# Monthly movement summary
+# Monthly movement summary (requires lubridate for month())
 movements %>%
-  mutate(month = month(movement_date, label = TRUE)) %>%
+  mutate(month = month(date, label = TRUE)) %>%
   group_by(month) %>%
   summarise(
     n_movements = n(),
-    total_animals = sum(num_animals, na.rm = TRUE)
+    total_animals = sum(weight, na.rm = TRUE)
   )
 # # A tibble: 12 × 3
 #   month n_movements total_animals
-#   <ord>       <int>         <dbl>
-# 1 Jan          2876         67543
-# 2 Feb          2654         62345
-# 3 Mar          3123         78234
-# ...`}
+#   <ord>       <int>        <dbl>
+# 1 Jan          2698        ...
+# 2 Feb          2468        ...
+# 3 Mar          3059        ...
+# ...  (Dec has the most with 3895 movements)`}
           language="r"
           title="group_by() + summarise() Examples"
         />
@@ -771,7 +856,7 @@ movements %>%
           code={`# Complete analysis in one pipeline
 top_sources_to_oshakati <- movements %>%
   # Step 1: Filter for cattle going to Oshakati
-  filter(animal_species == "Cattle",
+  filter(animal_type == "Cattle",
          destination_constituency == "Oshakati East" |
          destination_constituency == "Oshakati West") %>%
 
@@ -781,12 +866,12 @@ top_sources_to_oshakati <- movements %>%
   # Step 3: Calculate summary statistics
   summarise(
     n_movements = n(),
-    total_cattle = sum(num_animals, na.rm = TRUE),
-    avg_per_movement = round(mean(num_animals, na.rm = TRUE), 1)
+    total_animals = sum(weight, na.rm = TRUE),
+    avg_per_movement = round(mean(weight, na.rm = TRUE), 1)
   ) %>%
 
-  # Step 4: Sort by total cattle descending
-  arrange(desc(total_cattle)) %>%
+  # Step 4: Sort by total animals descending
+  arrange(desc(total_animals)) %>%
 
   # Step 5: Keep only top 5
   head(5)
@@ -794,13 +879,13 @@ top_sources_to_oshakati <- movements %>%
 # View results
 top_sources_to_oshakati
 # # A tibble: 5 × 4
-#   origin_constituency n_movements total_cattle avg_per_movement
+#   origin_constituency n_movements total_animals avg_per_movement
 #   <chr>                     <int>        <dbl>            <dbl>
-# 1 Outapi                      234         7890             33.7
-# 2 Opuwo Urban                 198         5678             28.7
-# 3 Oshakati East               187         4567             24.4
-# 4 Ondangwa                    165         4123             25.0
-# 5 Ongwediva                   143         3456             24.2`}
+# 1 Mpungu                      310          761              2.5
+# 2 Nkurenkure                  105          609              5.8
+# 3 Nehale LyaMpingana           93          591              6.4
+# 4 Mashare                     206          543              2.6
+# 5 Tondoro                     138          366              2.7`}
           language="r"
           title="Complete Analysis Pipeline"
         />
@@ -818,47 +903,52 @@ top_sources_to_oshakati
         <CodeBlock
           code={`# Count missing values in each column
 colSums(is.na(movements))
-#      permit_number      movement_date      origin_region
-#                  0                  0                  5
-# origin_constituency destination_region        num_animals
-#                 12                  3                 47
+#                           date                  origin_region
+#                              0                              0
+#            origin_constituency           origin_establishment
+#                              0                             10
+#      origin_establishment_type                    animal_type
+#                              0                              0
+#                         weight             destination_region
+#                              0                              0
+#       destination_constituency      destination_establishment
+#                              0                              0
+# destination_establishment_type
+#                              0
 
 # Which columns have missing values?
 movements %>%
   summarise(across(everything(), ~sum(is.na(.)))) %>%
   pivot_longer(everything(), names_to = "column", values_to = "n_missing") %>%
   filter(n_missing > 0)
-# # A tibble: 4 × 2
-#   column              n_missing
-#   <chr>                   <int>
-# 1 origin_region               5
-# 2 origin_constituency        12
-# 3 destination_region          3
-# 4 num_animals                47
+# # A tibble: 1 × 2
+#   column               n_missing
+#   <chr>                    <int>
+# 1 origin_establishment        10
 
 # Remove rows with ANY missing values (use with caution!)
 movements_complete <- movements %>%
   drop_na()
 
 nrow(movements)          # [1] 35970
-nrow(movements_complete) # [1] 35907  <- Lost 63 rows
+nrow(movements_complete) # [1] 35960  <- Lost 10 rows
 
 # Remove rows with missing values in specific columns
 movements_clean <- movements %>%
-  drop_na(num_animals, origin_region)
+  drop_na(origin_establishment, origin_region)
 
 # Replace missing values
 movements_filled <- movements %>%
   mutate(
-    num_animals = replace_na(num_animals, 0),  # Replace NA with 0
+    origin_establishment = replace_na(origin_establishment, "Unknown"),
     origin_region = replace_na(origin_region, "Unknown")
   )
 
 # Filter to see only rows WITH missing values
 movements %>%
-  filter(is.na(num_animals)) %>%
+  filter(is.na(origin_establishment)) %>%
   head()
-# Shows rows where num_animals is missing`}
+# Shows rows where origin_establishment is missing`}
           language="r"
           title="Working with Missing Values"
         />
@@ -902,12 +992,13 @@ movements %>%
         </p>
 
         <CodeBlock
-          code={`# Load the sf package for spatial data
+          code={`# Load required packages
 library(sf)
 library(tidyverse)
+library(readxl)
 
 # Read the constituency GeoJSON
-constituencies <- st_read("data/spatial/nam_constituency_4326.geojson")
+constituencies <- st_read("data/nam_constituency_4326.geojson")
 # Reading layer 'nam_constituency_4326' from data source
 # Simple feature collection with 121 features and 5 fields
 # Geometry type: MULTIPOLYGON
@@ -922,6 +1013,9 @@ glimpse(constituencies)
 # $ nca        <lgl> TRUE, TRUE, TRUE, FALSE, ...
 # $ gid        <int> 1, 2, 3, 4, 5, 6, ...
 # $ geometry   <MULTIPOLYGON [°]>
+
+# Quick plot to visualize the constituencies
+plot(constituencies["region"])  # Color by region
 
 # Create a lookup table (drop the geometry, we just need the table)
 const_lookup <- constituencies %>%
@@ -1014,38 +1108,28 @@ origin_mismatches <- movements_with_gid %>%
   distinct(origin_constituency)
 
 print(origin_mismatches)
-# # A tibble: 4 × 1
+# # A tibble: 1 × 1
 #   origin_constituency
 #   <chr>
-# 1 Katima Mulilo Rural    <- No space issue? Check spelling
-# 2 Kabbe North
-# 3 Kabbe South
-# 4 Judea Lyaboloma
+# 1 Opuwo
 
 # Check what names exist in the reference data that might match
 const_lookup %>%
-  filter(str_detect(constituency, "Katima|Kabbe|Judea|Lyaboloma"))
-# # A tibble: 4 × 4
-#   constituency        gid region   nca
-#   <chr>             <int> <chr>    <lgl>
-# 1 Katima Mulilo        42 Zambezi  TRUE
-# 2 Kabbe                38 Zambezi  TRUE      <- Only one "Kabbe" in reference!
-# 3 Judea                39 Zambezi  TRUE
-# 4 Linyanti             43 Zambezi  TRUE
+  filter(str_detect(constituency, "Opuwo"))
+# # A tibble: 2 × 4
+#   constituency   gid region nca
+#   <chr>        <int> <chr>  <lgl>
+# 1 Opuwo Urban     64 Kunene TRUE
+# 2 Opuwo Rural     66 Kunene TRUE
 
-# The problem: Movement data has:
-# - "Katima Mulilo Rural" but reference has "Katima Mulilo"
-# - "Kabbe North" / "Kabbe South" but reference only has "Kabbe"
-# - "Judea Lyaboloma" but reference has separate "Judea" and possibly "Lyaboloma"
+# The problem: Movement data has "Opuwo" but reference has
+# "Opuwo Urban" and "Opuwo Rural" - we need to decide which one!
+# For this example, we'll map to "Opuwo Rural" (more common for livestock)
 
 # Solution: Create a manual mapping table for fixes
 name_fixes <- tibble(
-  movement_name = c("Katima Mulilo Rural", "Katima Mulilo Urban",
-                    "Kabbe North", "Kabbe South",
-                    "Judea Lyaboloma"),
-  correct_name = c("Katima Mulilo", "Katima Mulilo",
-                   "Kabbe", "Kabbe",
-                   "Judea")
+  movement_name = c("Opuwo"),
+  correct_name = c("Opuwo Rural")  # Decision: map to Rural
 )
 
 # Apply fixes to the movement data
@@ -1088,16 +1172,13 @@ movements_final %>%
           title="Find and Fix Name Mismatches"
         />
 
-        <Callout type="tip" title="Fuzzy Matching for Many Mismatches">
-          <p className="mb-2">
-            If you have many mismatches, consider using the <code>stringdist</code> package for
-            approximate matching:
+        <Callout type="warning" title="Manual Review is Usually Best">
+          <p>
+            For a small number of mismatches, <strong>manual review is more reliable</strong> than
+            automated fuzzy matching. Fuzzy matching (e.g., <code>stringdist</code> package) can
+            suggest wrong matches - for example, it might match "Opuwo" to "Epupa" instead of
+            "Opuwo Rural" because the string lengths differ. Always verify automated suggestions!
           </p>
-          <pre className="bg-white p-2 rounded text-sm font-mono mt-2 overflow-x-auto">
-{`library(stringdist)
-# Find closest match for each unmatched name
-amatch(unmatched_names, const_lookup$constituency, maxDist = 3)`}
-          </pre>
         </Callout>
 
         <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">7.4 Save the Cleaned Data</h3>
@@ -1122,7 +1203,7 @@ movements_clean %>%
   group_by(origin_gid, destination_gid) %>%
   summarise(
     n_movements = n(),
-    total_animals = sum(weight),
+    total_animals = sum(weight, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   arrange(desc(total_animals)) %>%
@@ -1171,8 +1252,8 @@ movements_clean %>%
           <div className="bg-gray-50 p-4 rounded">
             <h4 className="font-semibold text-gray-800 mb-2">Task 2: Filtering</h4>
             <ol className="list-decimal list-inside space-y-1 text-sm text-gray-700">
-              <li>Filter for cattle movements only</li>
-              <li>Filter for movements with more than 100 animals</li>
+              <li>Filter for cattle movements only (use animal_type column)</li>
+              <li>Filter for movements with more than 50 animals (weight &gt; 50)</li>
               <li>Filter for movements from Kunene to Oshana</li>
             </ol>
           </div>
@@ -1180,9 +1261,9 @@ movements_clean %>%
           <div className="bg-gray-50 p-4 rounded">
             <h4 className="font-semibold text-gray-800 mb-2">Task 3: Summarising</h4>
             <ol className="list-decimal list-inside space-y-1 text-sm text-gray-700">
-              <li>Calculate total animals moved per animal species</li>
+              <li>Calculate total animals moved per animal type (sum of weight column)</li>
               <li>Find the month with the most movements</li>
-              <li>What's the average movement size by destination type (Farm, Auction, Abattoir)?</li>
+              <li>What's the average number of animals per movement by destination establishment type?</li>
             </ol>
           </div>
         </div>
@@ -1190,11 +1271,11 @@ movements_clean %>%
         <div className="mt-6 p-4 bg-woah-orange/10 rounded-lg">
           <h4 className="font-bold text-woah-orange mb-3">Expected Answers (Check Your Work)</h4>
           <div className="font-mono text-sm space-y-2 text-gray-700">
-            <p><span className="text-gray-500"># Task 1.2:</span> 35,970 rows, 12 columns</p>
-            <p><span className="text-gray-500"># Task 1.4:</span> 8 unique origin regions</p>
-            <p><span className="text-gray-500"># Task 2.1:</span> ~28,456 cattle movements</p>
-            <p><span className="text-gray-500"># Task 2.2:</span> ~2,134 movements &gt;100 animals</p>
-            <p><span className="text-gray-500"># Task 3.1:</span> Cattle highest total, then goats</p>
+            <p><span className="text-gray-500"># Task 1.2:</span> 35,970 rows, 11 columns</p>
+            <p><span className="text-gray-500"># Task 1.4:</span> 9 unique origin regions</p>
+            <p><span className="text-gray-500"># Task 2.1:</span> 32,010 cattle movements</p>
+            <p><span className="text-gray-500"># Task 2.2:</span> 741 movements with &gt;50 animals</p>
+            <p><span className="text-gray-500"># Task 3.1:</span> Cattle highest total, then Goat, Sheep, Pig</p>
           </div>
         </div>
       </Exercise>
@@ -1233,11 +1314,11 @@ movements_clean %>%
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">
-        <Link to="/day3/session1" className="text-orange-500 hover:underline">
+        <Link to="/r-basics/session1" className="text-orange-500 hover:underline">
           ← Previous: Introduction to R
         </Link>
         <Link
-          to="/day4/session1"
+          to="/r-viz/session1"
           className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
         >
           Next: Data Visualization →
